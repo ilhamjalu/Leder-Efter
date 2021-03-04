@@ -19,3 +19,12 @@
 4. Setiap pemain akan secara bebas memasuki kelompok dengan warna apa saja
 5. Apabila ada tim yang sudah berisi 5 pemain, maka setiap pemain tidak akan bisa memasuki tim tersebut
 6. Permainan akan dimulai secara otomatis setelah semua pemain sudah memasuki salah satu tim
+
+### Game-Play
+1. Setiap tim akan dispawn dalam satu arena besar pada posisi yang berbeda
+2. Setelah setiap tim sudah dispawn, sejumlah item juga dispawn pada posisi yang diacak
+3. Tugas setiap tim yaitu mengumpulkan item yang tersebar secara acak sebanyak mungkin
+4. Apabila pemain sudah berhasil mengambil satu item, maka ia harus membawanya ke posisi awal timnya
+5. Pemain tidak bisa merebut item yang sudah diambil oleh pemain lain
+6. Total skor dalam satu tim akan dihitung berdasarkan total item yang berhasil ditemukan oleh setiap pemain dalam tim tersebut
+7. Permainan akan berakhir ketika seluruh item sudah ditemukan
