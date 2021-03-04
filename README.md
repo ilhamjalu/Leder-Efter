@@ -14,4 +14,4 @@ Platform: Windows
 Unity 2019 LTS
 
 ### High-Concept Document
-High Concept Document can be accessed in [ppt](Leder Efter Detail.cs)
+High Concept Document can be accessed in <a href>="https://docs.google.com/presentation/d/1IT5tO_OZ1EZySGK0vKDDZZpI3ZeyAXCc-Gt6M5B67sk/edit?usp=sharing"
