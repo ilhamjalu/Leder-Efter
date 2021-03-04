@@ -14,4 +14,4 @@ Platform: Windows
 Unity 2019 LTS
 
 ### High-Concept Document
-High Concept Document can be accessed in <a href="4210181002_4210181010_Leder Efter Detail.pptx">here
+High Concept Document can be accessed in <a href="4210181002_4210181010_Leder Efter Detail.pdf">here
