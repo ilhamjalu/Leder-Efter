@@ -1,7 +1,7 @@
 # Leder-Efter
-(Author) 4210181002 Farhan Muhammad
-(Author) 4210181010 Ilham Jalu Prakosa
-(Course) Praktikum Desain Game Multiplayer Online
+1. (Author) 4210181002 Farhan Muhammad
+2. (Author) 4210181010 Ilham Jalu Prakosa
+3. (Course) Praktikum Desain Game Multiplayer Online
 
 ### Game-Flow
 1. Saat akan login, pemain diharuskan untuk memasukkan username dan password
