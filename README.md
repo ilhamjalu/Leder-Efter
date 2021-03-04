@@ -8,6 +8,7 @@ This game can be played by up to 30 players. Every five players will enter into 
 
 ### Game-Detail
 Multiplayer Game Online
+
 Platform: Windows
 
 ### Game-Engine
