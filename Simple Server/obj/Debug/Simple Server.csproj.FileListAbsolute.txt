@@ -1,0 +1,7 @@
+D:\PENS\Unity Project\Simple Server\Simple Server\bin\Debug\Simple Server.exe.config
+D:\PENS\Unity Project\Simple Server\Simple Server\bin\Debug\Simple Server.exe
+D:\PENS\Unity Project\Simple Server\Simple Server\bin\Debug\Simple Server.pdb
+D:\PENS\Unity Project\Simple Server\Simple Server\obj\Debug\Simple Server.csprojAssemblyReference.cache
+D:\PENS\Unity Project\Simple Server\Simple Server\obj\Debug\Simple Server.csproj.CoreCompileInputs.cache
+D:\PENS\Unity Project\Simple Server\Simple Server\obj\Debug\Simple Server.exe
+D:\PENS\Unity Project\Simple Server\Simple Server\obj\Debug\Simple Server.pdb
