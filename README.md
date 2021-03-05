@@ -14,8 +14,8 @@ This game can be played by up to 30 players. Every five players will enter into 
 Unity 2019 LTS
 
 ### High-Concept-Document
-High Concept Document can be accessed in <a href="https://docs.google.com/presentation/d/1IT5tO_OZ1EZySGK0vKDDZZpI3ZeyAXCc-Gt6M5B67sk/edit?usp=sharing">here
+High Concept Document can be accessed in <a href="https://docs.google.com/presentation/d/1IT5tO_OZ1EZySGK0vKDDZZpI3ZeyAXCc-Gt6M5B67sk/edit?usp=sharing">here</a>
 
 ### Simple-Chat-Box
-1. Server Source Code can be accessed in <a href="Simple Server\Program.cs">here
-2. Client Source Code can be accessed in <a href="ClientChatBox\Assets\Scripts\ClientScript.cs">here
+1. Server Source Code can be accessed in <a href="Simple Server\Program.cs">here</a>
+2. Client Source Code can be accessed in <a href="ClientChatBox\Assets\Scripts\ClientScript.cs">here</a>
