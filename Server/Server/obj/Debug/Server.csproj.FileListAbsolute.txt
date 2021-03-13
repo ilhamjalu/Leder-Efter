@@ -1,0 +1,7 @@
+D:\gt\Semester 6\9. Praktikum Desain Game Multiplayer Online\Leder-Efter\Server\Server\bin\Debug\Server.exe.config
+D:\gt\Semester 6\9. Praktikum Desain Game Multiplayer Online\Leder-Efter\Server\Server\bin\Debug\Server.exe
+D:\gt\Semester 6\9. Praktikum Desain Game Multiplayer Online\Leder-Efter\Server\Server\bin\Debug\Server.pdb
+D:\gt\Semester 6\9. Praktikum Desain Game Multiplayer Online\Leder-Efter\Server\Server\obj\Debug\Server.csprojAssemblyReference.cache
+D:\gt\Semester 6\9. Praktikum Desain Game Multiplayer Online\Leder-Efter\Server\Server\obj\Debug\Server.csproj.CoreCompileInputs.cache
+D:\gt\Semester 6\9. Praktikum Desain Game Multiplayer Online\Leder-Efter\Server\Server\obj\Debug\Server.exe
+D:\gt\Semester 6\9. Praktikum Desain Game Multiplayer Online\Leder-Efter\Server\Server\obj\Debug\Server.pdb
