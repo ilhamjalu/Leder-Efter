@@ -6,10 +6,11 @@
         public string name;
         public string pass;
 
-        public SerializableData(string username,string password)
+        public SerializableData(string username, string password)
         {
             name = username;
             pass = password;
         }
     }
 }
+
