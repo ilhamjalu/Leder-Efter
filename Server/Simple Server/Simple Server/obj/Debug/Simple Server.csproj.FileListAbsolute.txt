@@ -1,0 +1,7 @@
+D:\PENS\SEMESTER 6\Desain Multiplayer Game\Simple Server\Simple Server\obj\Debug\Simple Server.csprojAssemblyReference.cache
+D:\PENS\SEMESTER 6\Desain Multiplayer Game\Simple Server\Simple Server\obj\Debug\Simple Server.csproj.CoreCompileInputs.cache
+D:\PENS\SEMESTER 6\Desain Multiplayer Game\Simple Server\Simple Server\bin\Debug\Simple Server.exe.config
+D:\PENS\SEMESTER 6\Desain Multiplayer Game\Simple Server\Simple Server\bin\Debug\Simple Server.exe
+D:\PENS\SEMESTER 6\Desain Multiplayer Game\Simple Server\Simple Server\bin\Debug\Simple Server.pdb
+D:\PENS\SEMESTER 6\Desain Multiplayer Game\Simple Server\Simple Server\obj\Debug\Simple Server.exe
+D:\PENS\SEMESTER 6\Desain Multiplayer Game\Simple Server\Simple Server\obj\Debug\Simple Server.pdb
