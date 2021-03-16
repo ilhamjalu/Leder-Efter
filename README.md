@@ -17,5 +17,5 @@ Unity 2019 LTS
 High Concept Document can be accessed in <a href="https://docs.google.com/presentation/d/1IT5tO_OZ1EZySGK0vKDDZZpI3ZeyAXCc-Gt6M5B67sk/edit?usp=sharing">here</a>
 
 ### Simple-Chat-Box
-1. Server Source Code can be accessed in <a href="Simple Server\Program.cs">here</a>
-2. Client Source Code can be accessed in <a href="ClientChatBox\Assets\Scripts\ClientScript.cs">here</a>
+1. Server Source Code can be accessed in <a href="Server\Server\ChatBox.cs">here</a>
+2. Client Source Code can be accessed in <a href="Leder Efter\AssetsScripts\ChatBoxScriptPage.cs">here</a>
