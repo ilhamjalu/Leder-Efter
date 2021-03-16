@@ -12,4 +12,17 @@
             pass = password;
         }
     }
+
+    [System.Serializable]
+    class Player
+    {
+        public string team;
+        public string item;
+
+        public Player(string a, string b)
+        {
+            team = a;
+            item = b;
+        }
+    }
 }
