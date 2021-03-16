@@ -19,7 +19,3 @@ High Concept Document can be accessed in <a href="https://docs.google.com/presen
 ### Simple-Chat-Box
 1. Server Source Code can be accessed in <a href="Server\Server\ChatBox.cs">here</a>
 2. Client Source Code can be accessed in <a href="Leder Efter\Assets\Scripts\ChatBoxScriptPage.cs">here</a>
-
-### Login-System-With-Binary-Serialize-Deserialize
-1. Server Source Code can be accessed in <a href="Server\Server\LoginPage.cs">here</a>
-2. Client Source Code can be accessed in <a href="Leder Efter\Assets\Scripts\LoginPageScript.cs">here</a>
