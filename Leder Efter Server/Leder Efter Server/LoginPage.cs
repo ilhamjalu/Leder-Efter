@@ -8,41 +8,37 @@ namespace ExternalMethods
 {
     class LoginPage
     {
-        public static int playerOrder;
+        public static string playerUname;
 
-        public int getterId()
+        public string getterUname()
         {
-            return playerOrder;
+            return playerUname;
         }
 
-        public void SignIn(Stream s, StreamWriter writer, List<Database.Client> ClientDatabase)
+        public void SignIn(Stream s, StreamWriter writer, List<User.Database> ClientDatabase)
         {
-            ClientData.SerializableData data;
-            IFormatter formatter = new BinaryFormatter();
-            formatter.Binder = new CoreProgram.CustomizedBinder();
-            data = (ClientData.SerializableData)formatter.Deserialize(s);
+            IFormatter formatter_recv = new BinaryFormatter();
+            formatter_recv.Binder = new CoreProgram.CustomizedBinder();
+            User.LoginData data_recv = (User.LoginData)formatter_recv.Deserialize(s);
             bool found = false;
 
-            for (int i = 0; i < ClientDatabase.Count; i++)
+            foreach (User.Database ouser in ClientDatabase)
             {
-                if (data.name == ClientDatabase[i].username)
+                if (data_recv.name == ouser.username)
                 {
                     found = true;
-                    if (data.pass == ClientDatabase[i].password)
+                    if (data_recv.pass == ouser.password)
                     {
-                        playerOrder = i;
-
+                        playerUname = ouser.username;
+                        Console.WriteLine(" " + ouser.username + " signed in");
                         writer.WriteLine("login was successful");
                         writer.Flush();
 
-                        writer.WriteLine(Convert.ToString(ClientDatabase[i].identity));
-                        writer.Flush();
-
-                        writer.WriteLine(ClientDatabase[i].username);
-                        writer.Flush();
-
-                        writer.WriteLine(ClientDatabase[i].password);
-                        writer.Flush();
+                        IFormatter formatter_send = new BinaryFormatter();
+                        formatter_send.Binder = new CoreProgram.CustomizedBinder();
+                        User.LoginData data_send = new User.LoginData(data_recv.name, data_recv.pass);
+                        formatter_send.Serialize(s, data_send);
+                        return;
                     }
                     else
                     {
@@ -58,19 +54,18 @@ namespace ExternalMethods
                 writer.Flush();
             }
 
-            PrintDatabase(ClientDatabase);
+            //PrintDatabase(ClientDatabase);
         }
-        public void SignUp(Stream s, StreamWriter writer, List<Database.Client> ClientDatabase)
+        public void SignUp(Stream s, StreamWriter writer, List<User.Database> ClientDatabase)
         {
-            ClientData.SerializableData data;
-            IFormatter formatter = new BinaryFormatter();
-            formatter.Binder = new CoreProgram.CustomizedBinder();
-            data = (ClientData.SerializableData)formatter.Deserialize(s);
+            IFormatter formatter_recv = new BinaryFormatter();
+            formatter_recv.Binder = new CoreProgram.CustomizedBinder();
+            User.LoginData data_recv = (User.LoginData)formatter_recv.Deserialize(s);
             bool found = false;
 
             for (int i = 0; i < ClientDatabase.Count; i++)
             {
-                if (data.name == ClientDatabase[i].username)
+                if (data_recv.name == ClientDatabase[i].username)
                 {
                     found = true;
                     writer.WriteLine("account failed to register! change your username!");
@@ -80,20 +75,20 @@ namespace ExternalMethods
 
             if (!found)
             {
-                ClientDatabase.Add(new Database.Client());
-                ClientDatabase[ClientDatabase.Count - 1].setterData(ClientDatabase.Count - 1, data.name, data.pass);
+                ClientDatabase.Add(new User.Database());
+                ClientDatabase[ClientDatabase.Count - 1].setterData(ClientDatabase.Count - 1, data_recv.name, data_recv.pass);
                 writer.WriteLine("account successfully registered");
                 writer.Flush();
             }
 
-            PrintDatabase(ClientDatabase);
+            //PrintDatabase(ClientDatabase);
         }
 
-        public void PrintDatabase(List<Database.Client> ClientDatabase)
+        public void PrintDatabase(List<User.Database> ClientDatabase)
         {
-            Console.Clear();
+            //Console.Clear();
             Console.WriteLine(" [SERVER-SIDE]");
-            foreach (Database.Client oclient in ClientDatabase)
+            foreach (User.Database oclient in ClientDatabase)
             {
                 Console.WriteLine(" id: " + oclient.identity +
                                   ", username: " + oclient.username +

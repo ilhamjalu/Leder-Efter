@@ -8,6 +8,7 @@ public class SceneMoving : MonoBehaviour
 {
     public Button _this;
     public bool interactable;
+    public string sceneName;
 
     // Start is called before the first frame update
     void Start()
@@ -23,6 +24,6 @@ public class SceneMoving : MonoBehaviour
         if (interactable && this.name == "Exit")
             Application.Quit();
         else if (interactable)
-            SceneManager.LoadScene(this.name);
+            SceneManager.LoadScene(sceneName);
     }
 }

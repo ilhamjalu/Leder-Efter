@@ -48,7 +48,10 @@
     <Compile Include="LoginPage.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SerializableData.cs" />
+    <Compile Include="LoginData.cs" />
+    <Compile Include="Randomizer.cs" />
+    <Compile Include="RandomObjective.cs" />
+    <Compile Include="RandomTeam.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

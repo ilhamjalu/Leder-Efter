@@ -1,14 +1,14 @@
-﻿namespace Database
+﻿namespace User
 {
     [System.Serializable]
-    class Client
+    class Database
     {
-        public long identity { get; set; }
+        public int identity { get; set; }
         public string username { get; set; }
         public string password { get; set; }
         public string message { get; set; }
 
-        public void setterData(long id, string name, string pass)
+        public void setterData(int id, string name, string pass)
         {
             identity = id;
             username = name;

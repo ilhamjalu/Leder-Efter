@@ -19,8 +19,7 @@ namespace CoreProgram
 
     public class ServerSide
     {
-        static List<Database.Client> ClientDatabase = new List<Database.Client>();
-        static int playerId;
+        static List<User.Database> ClientDatabase = new List<User.Database>();
 
         public static void ClientProcess(object argument)
         {
@@ -30,30 +29,42 @@ namespace CoreProgram
             NetworkStream ns = client.GetStream();
             //Data DataClient = new Data();
 
-            ExternalMethods.LoginPage loginPage = new LoginPage();
-            ExternalMethods.ChatBox chatBox = new ChatBox();
+            LoginPage loginPage = new LoginPage();
+            ChatBox chatBox = new ChatBox();
+            int playerId = 0;
 
             try
             {
                 while (true)
                 {
                     string process = reader.ReadLine();
+                    switch (process)
+                    {
+                        case "1":
+                            loginPage.SignIn(ns, writer, ClientDatabase);
+                            string uname = loginPage.getterUname();
+                            foreach (User.Database ouser in ClientDatabase)
+                            {
+                                if (uname == ouser.username)
+                                    playerId = ouser.identity;
+                            }
+                            break;
 
-                    if (process == "0")
-                    {
-                        loginPage.SignIn(ns, writer, ClientDatabase);
-                        playerId = loginPage.getterId();
+                        case "2":
+                            loginPage.SignUp(ns, writer, ClientDatabase);
+                            break;
+
+                        case "3":
+                            ClientDatabase[playerId].message = chatBox.ReceiveClientMessage(reader);
+                            chatBox.BroadcastClientMessage(writer, ClientDatabase[playerId].username + ": " + ClientDatabase[playerId].message);
+                            break;
+
+                        case "4":
+                            Randomizer.Randomize(ns);
+                            break;
                     }
-                    else if (process == "1")
-                    {
-                        loginPage.SignUp(ns, writer, ClientDatabase);
-                    }
-                    else if (process == "3")
-                    {
-                        ClientDatabase[playerId].message = chatBox.ReceiveClientMessage(reader);
-                        Console.WriteLine(" " + ClientDatabase[playerId].username + ": " + ClientDatabase[playerId].message);
-                        chatBox.BroadcastClientMessage(writer, ClientDatabase[playerId].username + ": " + ClientDatabase[playerId].message);
-                    }
+
+                    process = "0";
                 }
             }
             catch (IOException)
@@ -68,7 +79,7 @@ namespace CoreProgram
 
             try
             {
-                ClientDatabase.Add(new Database.Client());
+                ClientDatabase.Add(new User.Database());
                 ClientDatabase[0].setterData(ClientDatabase.Count - 1, "admin", "admin");
 
                 Console.WriteLine(" [SERVER-SIDE]");
@@ -83,7 +94,7 @@ namespace CoreProgram
                 while (true)
                 {
                     TcpClient client = listener.AcceptTcpClient();
-                    Console.WriteLine(" [There's Client Join...]");
+                    //Console.WriteLine(" [There's Client Join...]");
                     Thread newThread = new Thread(ClientProcess);
 
                     GeneralData.clientOrder++;
