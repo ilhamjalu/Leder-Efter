@@ -23,10 +23,16 @@ public class NetworkScript : MonoBehaviour
     public string ipAddress;
     public int port;
 
-    [Header("Player Data")]
-    public long identity;
+    [Header("Player Attribute")]
+    public int identity;
     public string username;
     public string password;
+
+    [Header("General")]
+    public LoginPageScript login;
+    public ChatBoxScriptPage chatbox;
+    public RandomPageScript randomize;
+    public int indexMenu;
 
     void Awake()
     {
@@ -35,7 +41,48 @@ public class NetworkScript : MonoBehaviour
         reader = new StreamReader(ns);
         writer = new StreamWriter(ns);
 
+        Thread ThreadHandler = new Thread(ClientReceiver);
+        ThreadHandler.Start();
+
         DontDestroyOnLoad(this);
+    }
+
+    void Update()
+    {
+        if (login == null && indexMenu == 0)
+            login = GameObject.Find("Login Panel").GetComponent<LoginPageScript>();
+        else if (chatbox == null && indexMenu == 1)
+            chatbox = GameObject.Find("Chatbox Panel").GetComponent<ChatBoxScriptPage>();
+        else if (randomize == null && indexMenu == 2)
+            randomize = GameObject.Find("Randomize Panel").GetComponent<RandomPageScript>();
+    }
+
+    public void ClientReceiver()
+    {
+        while (true)
+        {
+            string process = reader.ReadLine();
+            switch (process)
+            {
+                case "1":
+                    login.ReceiveNotification();
+                    break;
+
+                case "2":
+                    login.ReceiveNotification();
+                    break;
+
+                case "3":
+                    chatbox.ReceiveMessage();
+                    break;
+
+                case "4":
+                    randomize.RandomReceiver();
+                    break;
+            }
+
+            process = "";
+        }
     }
 
     public void DisconnectFromServer()

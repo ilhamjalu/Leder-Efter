@@ -10,115 +10,106 @@ using TMPro;
 
 public class LoginPageScript : MonoBehaviour
 {
-    User.LoginData data;
-    float cooldown;
-
     [Header("General Attribute")]
     public NetworkScript network;
-    public LoginTransition menu;
+    public TMP_Text notif;
+    public Thread receiveThread;
     public string sceneLoad;
-    public string recv;
+    public string receive;
+    public bool isLogin;
 
     [Header("SignIn Attribute")]
-    public TMP_Text notifSignIn;
-    public TMP_InputField userSignIn, passSignIn;
     public Button signIn;
+    public TMP_InputField userSignIn, passSignIn;
 
     [Header("SignUp Attribute")]
-    public TMP_Text notifSignUp;
-    public TMP_InputField userSignUp, passSignUp, confirmPass;
     public Button signUp;
+    public TMP_InputField userSignUp, passSignUp, confirmPass;
 
     private void Start()
     {
         network = GameObject.Find("NetworkScript").GetComponent<NetworkScript>();
-        menu = GameObject.Find("BackgroundScript").GetComponent<LoginTransition>();
-        //Thread t = new Thread(ReceiveDatabase);
-        //t.Start();
 
-        signIn.onClick.AddListener(SignIn);
-        signUp.onClick.AddListener(SignUp);
+        signIn.onClick.AddListener(SignInSubmission);
+        signUp.onClick.AddListener(SignUpSubmission);
     }
 
     private void Update()
     {
-        notifSignIn.text = recv;
-        notifSignUp.text = recv;
-
-        if (network.username != "" || network.password != "")
+        notif.text = receive;
+        if (isLogin)
             SceneManager.LoadScene(sceneLoad);
     }
 
-    public void ReceiveDatabase()
+    public void ReceiveNotification()
     {
-        while (true)
-        {
-            recv = network.reader.ReadLine();
-        }
+        receive = network.reader.ReadLine();
+        if (receive == "login was successful")
+            ReceiveSignInData();
     }
 
-    public void SignIn()
+    public void ReceiveSignInData()
     {
+        IFormatter formatter_recv = new BinaryFormatter();
+        formatter_recv.Binder = new CustomizedBinder();
+        User.LoginData data_recv = (User.LoginData)formatter_recv.Deserialize(network.ns);
+
+        network.identity = data_recv.identity;
+        network.username = data_recv.username;
+        network.password = data_recv.password;
+        Debug.Log(data_recv.identity + " | " + data_recv.username + " | " + data_recv.password);
+
+        network.indexMenu = 1;
+        isLogin = true;
+    }
+
+    public void SignInSubmission()
+    {
+        Debug.Log("Sign In");
         if (userSignIn.text == "" || passSignIn.text == "")
-            recv = "fill in the blank field!";
+            receive = "please fill in the blank field";
         else
         {
-            Debug.Log("Masuk Sign In");
             network.writer.WriteLine("1");
             network.writer.Flush();
 
             IFormatter formatter_send = new BinaryFormatter();
             formatter_send.Binder = new CustomizedBinder();
-            User.LoginData data_send = new User.LoginData(userSignIn.text, passSignIn.text);
+            User.LoginData data_send = new User.LoginData(0, userSignIn.text, passSignIn.text);
             formatter_send.Serialize(network.ns, data_send);
 
-            recv = network.reader.ReadLine();
-            if (recv == "login was successful")
-            {
-                IFormatter formatter_recv = new BinaryFormatter();
-                formatter_recv.Binder = new CustomizedBinder();
-                User.LoginData data_recv = (User.LoginData)formatter_recv.Deserialize(network.ns);
-
-                network.username = data_recv.name;
-                network.password = data_recv.pass;
-            }
+            ValueReset();
         }
-
-        ValueReset();
     }
-    public void SignUp()
+
+    public void SignUpSubmission()
     {
-        if (userSignUp.text == "" || confirmPass.text == "" || passSignUp.text == "")
-            recv = "fill in the blank field!";
-        else if (confirmPass.text != passSignUp.text)
-            recv = "password are not matching!";
-        else if (confirmPass.text == passSignUp.text)
+        Debug.Log("Sign Up");
+        if (userSignUp.text == "" || passSignUp.text == "" || confirmPass.text == "")
+            receive = "please fill in the blank field";
+        else if (passSignUp.text != confirmPass.text)
+            receive = "please check the confirm password field";
+        else
         {
-            Debug.Log("Masuk Sign Up");
             network.writer.WriteLine("2");
             network.writer.Flush();
 
             IFormatter formatter_send = new BinaryFormatter();
             formatter_send.Binder = new CustomizedBinder();
-            User.LoginData data_send = new User.LoginData(userSignUp.text, passSignUp.text);
+            User.LoginData data_send = new User.LoginData(0, userSignUp.text, passSignUp.text);
             formatter_send.Serialize(network.ns, data_send);
 
-            recv = network.reader.ReadLine();
-            if (recv == "account successfully registered")
-                menu.menu = 0;
+            ValueReset();
         }
-
-        ValueReset();
     }
 
     public void ValueReset()
     {
-        notifSignIn.text = null;
-        notifSignUp.text = null;
-        userSignIn.text = null;
-        userSignUp.text = null;
-        passSignIn.text = null;
-        passSignUp.text = null;
-        confirmPass.text = null;
+        notif.text = "";
+        userSignIn.text = "";
+        userSignUp.text = "";
+        passSignIn.text = "";
+        passSignUp.text = "";
+        confirmPass.text = "";
     }
 }

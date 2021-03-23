@@ -11,51 +11,43 @@ using TMPro;
 public class ChatBoxScriptPage : MonoBehaviour
 {
     [Header("General Attribute")]
+    public ChatBoxSystem chatbox;
     public NetworkScript network;
-    public Button sendButton;
     public TMP_InputField inputText;
-    public TextMeshProUGUI helloText;
-    public TextMeshProUGUI informationText;
-    public TextMeshProUGUI historyChatText;
+    public Button sendButton;
+    public Thread receiveThread;
     public string recv;
 
     void Start()
     {
+        chatbox = this.gameObject.GetComponent<ChatBoxSystem>();
         network = GameObject.Find("NetworkScript").GetComponent<NetworkScript>();
-        Thread receiver = new Thread(ReceiveMessage);
-        receiver.Start();
 
         sendButton.onClick.AddListener(SubmitMessage);
     }
 
     void Update()
     {
-        historyChatText.text = recv;
-        helloText.text = "Hello, " + network.username;
+        if (recv != "")
+        {
+            chatbox.PrintMessageOnChatBox(recv);
+            recv = "";
+        }
     }
 
     void SubmitMessage()
     {
-        if (inputText.text == "")
-            informationText.text = "please input the message in the blank field";
-        else
-        {
-            network.writer.WriteLine("3");
-            network.writer.Flush();
+        network.writer.WriteLine("3");
+        network.writer.Flush();
 
-            network.writer.WriteLine(inputText.text);
-            network.writer.Flush();
+        network.writer.WriteLine(inputText.text);
+        network.writer.Flush();
 
-            informationText.text = "your message sent";
-            inputText.text = "";
-        }
+        inputText.text = "";
     }
 
-    void ReceiveMessage()
+    public void ReceiveMessage()
     {
-        while (true)
-        {
-            recv = network.reader.ReadLine();
-        }
+        recv = network.reader.ReadLine();
     }
 }

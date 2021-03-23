@@ -7,14 +7,11 @@ EditorBuildSettings:
   m_Scenes:
   - enabled: 1
     path: Assets/Scenes/LoginPage.unity
-    guid: 7162d3781702dc248bf86de9bdf92e1f
+    guid: 003e46b7fe3b62b4da10d6d384932192
   - enabled: 1
-    path: Assets/Scenes/MainMenu.unity
-    guid: 7d499df9a0a3aa240bf0875120d88367
+    path: Assets/Scenes/Chatbox.unity
+    guid: 424c004a4407c9a41bd8f762008749b7
   - enabled: 1
-    path: Assets/Scenes/ChatBox.unity
-    guid: 9fc0d4010bbf28b4594072e72b8655ab
-  - enabled: 1
-    path: Assets/Scenes/RandomData.unity
-    guid: 8f2e8a3de3f90c742a8e307b2ba52efc
+    path: Assets/Scenes/Randomize.unity
+    guid: 5256c9caa77cb2b44b67c4041b06bc5d
   m_configObjects: {}

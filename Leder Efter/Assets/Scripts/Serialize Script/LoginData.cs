@@ -3,13 +3,15 @@
     [System.Serializable]
     class LoginData
     {
-        public string name;
-        public string pass;
+        public int identity;
+        public string username;
+        public string password;
 
-        public LoginData(string username, string password)
+        public LoginData(int id, string uname, string pass)
         {
-            name = username;
-            pass = password;
+            this.identity = id;
+            this.username = uname;
+            this.password = pass;
         }
     }
 }
