@@ -20,4 +20,4 @@ High Concept Document can be accessed in [here](https://docs.google.com/presenta
 Game Concept Document can be accessed in [here](4210181002_4210181010_GDD.docx)
 
 ### GIF-Progress
-![](4210181002_4210181010_FPS Gameplay.gif)
+![4210181002_4210181010_FPS Gameplay](https://user-images.githubusercontent.com/57122816/112221784-73a3ec00-8c5a-11eb-9a64-9073f0fa5856.gif)
