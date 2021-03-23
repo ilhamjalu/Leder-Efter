@@ -21,6 +21,7 @@ namespace CoreProgram
     {
         static List<User.Database> ClientAccount = new List<User.Database>();
         static List<User.Database> ClientConnected = new List<User.Database>();
+        static List<User.FPSData> ClientFPS = new List<User.FPSData>();
         
         public static void ClientProcess(object argument)
         {
@@ -31,6 +32,8 @@ namespace CoreProgram
 
             LoginPage loginPage = new LoginPage();
             ChatBox chatBox = new ChatBox();
+            FPSPage fps = new FPSPage();
+            Randomizer random = new Randomizer();
             int playerId = GeneralData.clientOrder - 1;
 
             try
@@ -50,6 +53,9 @@ namespace CoreProgram
                             ClientConnected.Add(new User.Database());
                             ClientConnected[ClientConnected.Count - 1].setterData(playerId, loginPage.Getter(0), loginPage.Getter(1));
 
+                            ClientFPS.Add(new User.FPSData());
+                            ClientFPS[ClientFPS.Count - 1].setterData(loginPage.Getter(0), 100, 0, false, false, false);
+
                             loginPage.SetterId(playerId);
                             break;
 
@@ -63,7 +69,16 @@ namespace CoreProgram
                             break;
 
                         case "4":
-                            Randomizer.Randomize(ns, writer);
+                            random.Randomize(ns, writer);
+                            break;
+
+                        case "5":
+                            fps.FPSDataReceiver(ns, ClientConnected, ClientFPS, playerId);
+
+                            writer.WriteLine(ClientFPS.Count.ToString());
+                            writer.Flush();
+
+                            fps.FPSDataBroadcast(ns, ClientFPS);
                             break;
                     }
 
@@ -72,7 +87,7 @@ namespace CoreProgram
             }
             catch (IOException)
             {
-                Console.WriteLine("\n [has come out]");
+                Console.WriteLine("\n [" + ClientConnected[playerId].username + " has come out]");
             }
         }
 

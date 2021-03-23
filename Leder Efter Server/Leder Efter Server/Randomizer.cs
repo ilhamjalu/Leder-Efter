@@ -10,7 +10,7 @@ namespace ExternalMethods
         static string[] team = { "Hijau", "Merah", "Ungu", "Biru" };
         static string[] item = { "Apel", "Anggur", "Jeruk" };
 
-        public static void Randomize(Stream s, StreamWriter writer)
+        public void Randomize(Stream s, StreamWriter writer)
         {
             Random random = new Random();
             int a = random.Next(team.Length);
