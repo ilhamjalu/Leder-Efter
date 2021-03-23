@@ -17,4 +17,4 @@ Unity 2019 LTS
 High Concept Document can be accessed in <a href="https://docs.google.com/presentation/d/1IT5tO_OZ1EZySGK0vKDDZZpI3ZeyAXCc-Gt6M5B67sk/edit?usp=sharing">here</a>
 
 ### Game-Design-Document
-Game Concept Document can be accessed in ![here](4210181002_4210181010_GDD.docx)
+Game Concept Document can be accessed in [here](4210181002_4210181010_GDD.docx)
