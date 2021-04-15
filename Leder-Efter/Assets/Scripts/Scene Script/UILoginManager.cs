@@ -14,7 +14,6 @@ public class UILoginManager : MonoBehaviour
     public InputField ipField;
     public TextMeshProUGUI notif;
     public string toScene;
-    public bool isLogin;
 
     [Header("SignIn Attribute")]
     public TMP_InputField usernameSignIn;
@@ -39,20 +38,28 @@ public class UILoginManager : MonoBehaviour
     private void Start()
     {
         loginPage.SetActive(false);
-        ipField.text = "127.0.0.1";
     }
 
     private void Update()
     {
-        if (isLogin)
+        if (Client.instance.isLogin == 1)
         {
             SceneManager.LoadScene(toScene);
         }
+
+        //if (PlayerPrefs.GetInt("ClientIsLogin") == 1)
+        //{
+        //    ClientSend.SignInRequest(PlayerPrefs.GetString("ClientUname"), PlayerPrefs.GetString("ClientPass"));
+        //}
     }
 
     public void ConnectToServer()
     {
         ipField.interactable = false;
+
+        if (ipField.text == "")
+            ipField.text = "127.0.0.1";
+
         Client.instance.ip = ipField.text;
         Client.instance.ConnectToServer();
 
@@ -67,6 +74,7 @@ public class UILoginManager : MonoBehaviour
         else
         {
             Client.instance.myUname = usernameSignIn.text;
+            Client.instance.myPass = passwordSignIn.text;
             ClientSend.SignInRequest(usernameSignIn.text, passwordSignIn.text);
             ValueReset();
         }

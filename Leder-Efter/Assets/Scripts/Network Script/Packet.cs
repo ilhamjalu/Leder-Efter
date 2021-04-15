@@ -8,7 +8,6 @@ using UnityEngine;
 public enum ServerPackets
 {
     welcome = 1,
-    udpTest,
     signIn,
     signUp,
     chatbox,
@@ -19,7 +18,6 @@ public enum ServerPackets
 public enum ClientPackets
 {
     welcomeRequest = 1,
-    udpTestRequest,
     signInRequest,
     signUpRequest,
     chatboxRequest,
