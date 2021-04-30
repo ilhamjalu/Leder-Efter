@@ -25,13 +25,6 @@ namespace Leder_Efter_Server
             //Server.clients[_fromClient].SendtoGame(a);
         }
 
-        public static void UDPTestReceived(int _fromClient, Packet _packet)
-        {
-            string _msg = _packet.ReadString();
-
-            Console.WriteLine($"Received packet via UDP. Contains message: {_msg}");
-        }
-
         public static void SignInReceived(int _fromClient, Packet _packet)
         {
             ClientData.Account _account = _packet.ReadObject<ClientData.Account>();

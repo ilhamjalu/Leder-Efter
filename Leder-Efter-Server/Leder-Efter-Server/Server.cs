@@ -130,7 +130,6 @@ namespace Leder_Efter_Server
             packetHandlers = new Dictionary<int, PacketHandler>()
             {
                 { (int)ClientPackets.welcomeRequest, ServerHandle.WelcomeReceived },
-                { (int)ClientPackets.udpTestRequest, ServerHandle.UDPTestReceived },
                 { (int)ClientPackets.signInRequest, ServerHandle.SignInReceived },
                 { (int)ClientPackets.signUpRequest, ServerHandle.SignUpReceived },
                 { (int)ClientPackets.chatboxRequest, ServerHandle.ChatboxReceived },

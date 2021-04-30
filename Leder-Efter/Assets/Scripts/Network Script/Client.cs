@@ -13,7 +13,10 @@ public class Client : MonoBehaviour
     public string ip = "127.0.0.1";
     public int port = 26950;
     public string myUname = "";
+    public string myPass = "";
     public int myId = 0;
+    public int isLogin = 0;
+
     public TCP tcp;
     public UDP udp;
 
@@ -241,7 +244,6 @@ public class Client : MonoBehaviour
         packetHandlers = new Dictionary<int, PacketHandler>()
         {
             { (int)ServerPackets.welcome, ClientHandle.Welcome },
-            { (int)ServerPackets.udpTest, ClientHandle.UDPTest },
             { (int)ServerPackets.signIn, ClientHandle.SignInValidation },
             { (int)ServerPackets.signUp, ClientHandle.SignUpValidation },
             { (int)ServerPackets.chatbox, ClientHandle.ChatboxValidation },

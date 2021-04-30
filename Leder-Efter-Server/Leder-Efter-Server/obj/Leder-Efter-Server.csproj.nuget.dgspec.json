@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "D:\\gt\\Repository\\Leder-Efter-Project\\Trial\\Leder-Efter-Server\\Leder-Efter-Server\\Leder-Efter-Server.csproj": {}
+    "D:\\gt\\Repository\\Leder-Efter-Project\\Leder-Efter\\Leder-Efter-Server\\Leder-Efter-Server\\Leder-Efter-Server.csproj": {}
   },
   "projects": {
-    "D:\\gt\\Repository\\Leder-Efter-Project\\Trial\\Leder-Efter-Server\\Leder-Efter-Server\\Leder-Efter-Server.csproj": {
+    "D:\\gt\\Repository\\Leder-Efter-Project\\Leder-Efter\\Leder-Efter-Server\\Leder-Efter-Server\\Leder-Efter-Server.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\gt\\Repository\\Leder-Efter-Project\\Trial\\Leder-Efter-Server\\Leder-Efter-Server\\Leder-Efter-Server.csproj",
+        "projectUniqueName": "D:\\gt\\Repository\\Leder-Efter-Project\\Leder-Efter\\Leder-Efter-Server\\Leder-Efter-Server\\Leder-Efter-Server.csproj",
         "projectName": "Leder-Efter-Server",
-        "projectPath": "D:\\gt\\Repository\\Leder-Efter-Project\\Trial\\Leder-Efter-Server\\Leder-Efter-Server\\Leder-Efter-Server.csproj",
+        "projectPath": "D:\\gt\\Repository\\Leder-Efter-Project\\Leder-Efter\\Leder-Efter-Server\\Leder-Efter-Server\\Leder-Efter-Server.csproj",
         "packagesPath": "C:\\Users\\farhn\\.nuget\\packages\\",
-        "outputPath": "D:\\gt\\Repository\\Leder-Efter-Project\\Trial\\Leder-Efter-Server\\Leder-Efter-Server\\obj\\",
+        "outputPath": "D:\\gt\\Repository\\Leder-Efter-Project\\Leder-Efter\\Leder-Efter-Server\\Leder-Efter-Server\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\farhn\\AppData\\Roaming\\NuGet\\NuGet.Config",

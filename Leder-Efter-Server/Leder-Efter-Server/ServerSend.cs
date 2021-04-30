@@ -68,15 +68,6 @@ namespace Leder_Efter_Server
             }
         }
 
-        public static void UDPTest(int _toClient)
-        {
-            using (Packet _packet = new Packet((int)ServerPackets.udpTest))
-            {
-                _packet.Write("A test packet for UDP.");
-                SendUDPData(_toClient, _packet);
-            }
-        }
-
         public static void SignInValidation(int _toClient, string _msg)
         {
             using (Packet _packet = new Packet((int)ServerPackets.signIn))

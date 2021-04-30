@@ -9,7 +9,6 @@ namespace Leder_Efter_Server
     public enum ServerPackets
     {
         welcome = 1,
-        udpTest,
         signIn,
         signUp,
         chatbox,
@@ -25,7 +24,6 @@ namespace Leder_Efter_Server
     public enum ClientPackets
     {
         welcomeRequest = 1,
-        udpTestRequest,
         signInRequest,
         signUpRequest,
         chatboxRequest,
