@@ -19,21 +19,13 @@ public class ClientHandle : MonoBehaviour
         Client.instance.udp.Connect(((IPEndPoint)Client.instance.tcp.socket.Client.LocalEndPoint).Port);
     }
 
-    public static void UDPTest(Packet _packet)
-    {
-        string _msg = _packet.ReadString();
-
-        Debug.Log($"Received packet via UDP. Contains message: {_msg}");
-        ClientSend.UDPTestRequest();
-    }
-
     public static void SignInValidation(Packet _packet)
     {
         string _msg = _packet.ReadString();
         UILoginManager.instance.notif.text = _msg;
 
         if (_msg == "login was successful")
-            UILoginManager.instance.isLogin = true;
+            Client.instance.isLogin = 1;
     }
 
     public static void SignUpValidation(Packet _packet)

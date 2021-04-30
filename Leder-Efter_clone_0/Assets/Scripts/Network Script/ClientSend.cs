@@ -30,16 +30,6 @@ public class ClientSend : MonoBehaviour
         }
     }
 
-    public static void UDPTestRequest()
-    {
-        using (Packet _packet = new Packet((int)ClientPackets.udpTestRequest))
-        {
-            _packet.Write("Received a UDP packet.");
-
-            SendUDPData(_packet);
-        }
-    }
-
     public static void SignInRequest(string uname, string pass)
     {
         using (Packet _packet = new Packet((int)ClientPackets.signInRequest))
