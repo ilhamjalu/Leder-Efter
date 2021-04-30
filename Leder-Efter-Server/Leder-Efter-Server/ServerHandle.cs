@@ -4,6 +4,7 @@ using System.Net.Sockets;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
+using System.Numerics;
 
 namespace Leder_Efter_Server
 {
@@ -12,12 +13,16 @@ namespace Leder_Efter_Server
         public static void WelcomeReceived(int _fromClient, Packet _packet)
         {
             int _clientIdCheck = _packet.ReadInt();
+            string a = "TESTING";
 
             Console.WriteLine($"{Server.clients[_fromClient].tcp.socket.Client.RemoteEndPoint} connected successfully and is now player {_fromClient}");
+            Server.total = _fromClient;
+            Console.WriteLine("Totl = " + Server.total);
             if (_fromClient != _clientIdCheck)
             {
                 Console.WriteLine($"Player ID: {_fromClient}) has assumed the wrong client ID ({_clientIdCheck})!");
             }
+            //Server.clients[_fromClient].SendtoGame(a);
         }
 
         public static void UDPTestReceived(int _fromClient, Packet _packet)
@@ -67,6 +72,48 @@ namespace Leder_Efter_Server
                     ServerSend.BroadcastReady(ReadyHandler.totalReady, Server.readyDatabase.Count, RandomizeHandler.StuffRandomizer(), RandomizeHandler.ColorRandomizer());
                 }
             }
+        }
+
+        public static void PlayerReady(int _fromClient, Packet _packet)
+        {
+            bool _ready = _packet.ReadBool();
+            ReadyHandler.ReadySetter(_fromClient, _ready);
+
+            if (_ready)
+            {
+                ReadyHandler.totalReady++;
+                ServerSend.Siap(ReadyHandler.totalReady, Server.readyDatabase.Count, "(wait)");
+
+                if (ReadyHandler.totalReady == Server.readyDatabase.Count)
+                {
+                    //Console.WriteLine($"All player're ready: {RandomizeHandler.StuffRandomizer()} & {RandomizeHandler.ColorRandomizer()}");
+                    ServerSend.Siap(ReadyHandler.totalReady, Server.readyDatabase.Count, "ready");
+                }
+            }
+        }
+
+        public static void ColorReceived(int _fromClient, Packet _packet)
+        {
+            bool warna = _packet.ReadBool();
+            ServerSend.SendColor();
+        }
+
+        public static void MintakPlayer(int _fromClient, Packet _packet)
+        {
+            string a = "TESTING";
+
+            Server.clients[_fromClient].SendtoGame(a);
+        }
+
+        public static void PlayerMovement(int _fromClient, Packet _packet)
+        {
+            bool[] _inputs = new bool[_packet.ReadInt()];
+            for(int i = 0; i < _inputs.Length; i++)
+            {
+                _inputs[i] = _packet.ReadBool();
+            }
+            Quaternion rot = _packet.ReadQuaternion();
+            Server.clients[_fromClient].player.SetInput(_inputs, rot);
         }
     }
 }

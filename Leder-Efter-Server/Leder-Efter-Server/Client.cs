@@ -3,14 +3,16 @@ using System.Collections.Generic;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
+using System.Numerics;
 
 namespace Leder_Efter_Server
 {
     class Client
     {
         public static int dataBufferSize = 4096;
+        public ClientData.Position player;
 
-        public int id;
+        public int id = 1;
         public TCP tcp;
         public UDP udp;
 
@@ -172,6 +174,30 @@ namespace Leder_Efter_Server
                         Server.packetHandlers[_packetId](id, _packet);
                     }
                 });
+            }
+        }
+
+        public void SendtoGame(string uname)
+        {
+            player = new ClientData.Position(id, uname, new Vector3(0, 0, 0));
+
+            foreach(Client client in Server.clients.Values)
+            {
+                if(client.player != null)
+                {
+                    if(client.id != id)
+                    {
+                        ServerSend.PositionBroadcast(id, client.player);
+                    }
+                }
+            }
+
+            foreach (Client client in Server.clients.Values)
+            {
+                if (client.player != null)
+                {
+                   ServerSend.PositionBroadcast(client.id, player);
+                }
             }
         }
     }

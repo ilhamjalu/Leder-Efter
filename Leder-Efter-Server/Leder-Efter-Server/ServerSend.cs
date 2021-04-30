@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
+
 namespace Leder_Efter_Server
 {
     class ServerSend
@@ -119,6 +120,69 @@ namespace Leder_Efter_Server
                 }
 
                 SendTCPDataToAll(_packet);
+            }
+        }
+
+        public static void Siap(int totalReady, int totalPlayer, string kondisi)
+        {
+            using (Packet _packet = new Packet((int)ServerPackets.readyGaQi))
+            {
+                _packet.Write(totalReady);
+                _packet.Write(totalPlayer);
+
+                if (totalReady == totalPlayer)
+                {
+                    _packet.Write(kondisi);
+                }
+
+                SendTCPDataToAll(_packet);
+            }
+        }
+
+        public static void SendColor()
+        {
+            using (Packet _packet = new Packet((int)ServerPackets.color))
+            {
+                var a = RandomizeHandler.ColorRandomizer();
+                
+                _packet.Write(a); 
+                SendTCPDataToAll(_packet);
+            }
+        }
+
+        public static void PositionBroadcast(int _toClient, ClientData.Position pos)
+        {
+            using (Packet _packet = new Packet((int)ServerPackets.spawnPlayer))
+            {
+                _packet.Write(pos.id);
+                _packet.Write(pos.username);
+                _packet.Write(pos.position);
+                _packet.Write(pos.rotation);
+
+                SendTCPData(_toClient, _packet);
+                //SendTCPDataToAll(_packet);
+            }
+        }
+
+        public static void PlayerPos(ClientData.Position pos)
+        {
+            using (Packet _packet = new Packet((int)ServerPackets.playerPos))
+            {
+                _packet.Write(pos.id);
+                _packet.Write(pos.position);
+
+                SendUDPDataToAll(_packet);
+            }
+        }
+
+        public static void PlayerRot(ClientData.Position pos)
+        {
+            using (Packet _packet = new Packet((int)ServerPackets.playerRot))
+            {
+                _packet.Write(pos.id);
+                _packet.Write(pos.rotation);
+
+                SendUDPDataToAll(pos.id, _packet);
             }
         }
         #endregion

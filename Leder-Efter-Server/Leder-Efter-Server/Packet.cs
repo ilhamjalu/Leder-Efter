@@ -13,7 +13,12 @@ namespace Leder_Efter_Server
         signIn,
         signUp,
         chatbox,
-        randomize
+        randomize,
+        color,
+        spawnPlayer,
+        playerPos,
+        playerRot,
+        readyGaQi
     }
 
     /// <summary>Sent from client to server.</summary>
@@ -24,7 +29,11 @@ namespace Leder_Efter_Server
         signInRequest,
         signUpRequest,
         chatboxRequest,
-        randomizeRequest
+        randomizeRequest,
+        colorRequest,
+        playerMovement,
+        mintakSpawnDong,
+        readyGan
     }
 
     public class Packet : IDisposable
@@ -32,7 +41,7 @@ namespace Leder_Efter_Server
         private List<byte> buffer;
         private byte[] readableBuffer;
         private int readPos;
-
+        
         /// <summary>Creates a new empty packet (without an ID).</summary>
         public Packet()
         {

@@ -7,7 +7,7 @@ namespace Leder_Efter_Server
     class RandomizeDatabase
     {
         public static List<string> stuff = new List<string> { "Grape", "Banana", "Apple" };
-        public static List<string> color = new List<string> { "Red", "Green", "Blue" };
+        public static List<string> color = new List<string> { "Merah", "Hijau", "Biru" };
     }
 
     class RandomizeHandler

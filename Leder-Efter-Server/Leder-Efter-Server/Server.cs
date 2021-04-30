@@ -10,7 +10,8 @@ namespace Leder_Efter_Server
     {
         public static int MaxPlayers { get; private set; }
         public static int Port { get; private set; }
-        
+        public static int total;
+
         public delegate void PacketHandler(int _fromClient, Packet _packet);
         public static Dictionary<int, Client> clients = new Dictionary<int, Client>();
         public static Dictionary<int, PacketHandler> packetHandlers;
@@ -33,6 +34,7 @@ namespace Leder_Efter_Server
 
             Console.WriteLine("Server is starting...");
             InitializeServerData();
+            Console.WriteLine("Total = " + total);
 
             tcpListener = new TcpListener(IPAddress.Any, Port);
             tcpListener.Start();
@@ -132,7 +134,12 @@ namespace Leder_Efter_Server
                 { (int)ClientPackets.signInRequest, ServerHandle.SignInReceived },
                 { (int)ClientPackets.signUpRequest, ServerHandle.SignUpReceived },
                 { (int)ClientPackets.chatboxRequest, ServerHandle.ChatboxReceived },
-                { (int)ClientPackets.randomizeRequest, ServerHandle.RandomizeReceived }
+                { (int)ClientPackets.randomizeRequest, ServerHandle.RandomizeReceived },
+                { (int)ClientPackets.colorRequest, ServerHandle.ColorReceived },
+                { (int)ClientPackets.mintakSpawnDong, ServerHandle.MintakPlayer },
+                { (int)ClientPackets.playerMovement, ServerHandle.PlayerMovement },
+                { (int)ClientPackets.readyGan, ServerHandle.PlayerReady }
+
             };
 
             Console.WriteLine("Initialized packets");
