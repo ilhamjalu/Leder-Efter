@@ -52,6 +52,25 @@ public class ClientSend : MonoBehaviour
         }
     }
 
+    public static void HostRoomRequest(string code)
+    {
+        using (Packet _packet = new Packet((int)ClientPackets.hostRoomRequest))
+        {
+            _packet.Write(code);
+            SendTCPData(_packet);
+        }
+    }
+
+    public static void JoinRoomRequest(string code, string uname)
+    {
+        using (Packet _packet = new Packet((int)ClientPackets.joinRoomRequest))
+        {
+            _packet.Write(code);
+            _packet.Write(uname);
+            SendTCPData(_packet);
+        }
+    }
+
     public static void ChatboxRequest(string uname, string msg)
     {
         using (Packet _packet = new Packet((int)ClientPackets.chatboxRequest))

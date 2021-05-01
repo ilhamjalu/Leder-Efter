@@ -34,6 +34,36 @@ public class ClientHandle : MonoBehaviour
         UILoginManager.instance.notif.text = _msg;
     }
 
+    public static void HostRoomValidation(Packet _packet)
+    {
+        string _msg = _packet.ReadString();
+        UIMenuManager.instance.notifText.text = _msg;
+
+        if (_msg == "room created succesfully")
+            Client.instance.host = true;
+    }
+
+    public static void JoinRoomValidation(Packet _packet)
+    {
+        string _msg = _packet.ReadString();
+        UIMenuManager.instance.notifText.text = _msg;
+
+        if (_msg == "joined succesfully")
+            Client.instance.isPlay = 1;
+    }
+
+    public static void AddPlayerToDatabase(Packet _packet)
+    {
+        string _codeRoom = _packet.ReadString();
+        int _id = _packet.ReadInt();
+        string _uname = _packet.ReadString();
+
+        if (_codeRoom == RoomDatabase.instance.roomCode)
+        {
+            RoomDatabase.instance.AddPlayerToDatabase(_id, _uname);
+        }
+    }
+
     public static void ChatboxValidation(Packet _packet)
     {
         ClientData.Chatbox _chatbox = _packet.ReadObject<ClientData.Chatbox>();

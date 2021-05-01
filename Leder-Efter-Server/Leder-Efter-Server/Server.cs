@@ -34,7 +34,6 @@ namespace Leder_Efter_Server
 
             Console.WriteLine("Server is starting...");
             InitializeServerData();
-            Console.WriteLine("Total = " + total);
 
             tcpListener = new TcpListener(IPAddress.Any, Port);
             tcpListener.Start();
@@ -132,6 +131,8 @@ namespace Leder_Efter_Server
                 { (int)ClientPackets.welcomeRequest, ServerHandle.WelcomeReceived },
                 { (int)ClientPackets.signInRequest, ServerHandle.SignInReceived },
                 { (int)ClientPackets.signUpRequest, ServerHandle.SignUpReceived },
+                { (int)ClientPackets.hostRoomRequest, ServerHandle.HostRoomReceived },
+                { (int)ClientPackets.joinRoomRequest, ServerHandle.JoinRoomReceived },
                 { (int)ClientPackets.chatboxRequest, ServerHandle.ChatboxReceived },
                 { (int)ClientPackets.randomizeRequest, ServerHandle.RandomizeReceived },
                 { (int)ClientPackets.colorRequest, ServerHandle.ColorReceived },

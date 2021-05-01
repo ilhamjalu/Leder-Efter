@@ -86,6 +86,35 @@ namespace Leder_Efter_Server
             }
         }
 
+        public static void HostRoomValidation(int _toClient, string _msg)
+        {
+            using (Packet _packet = new Packet((int)ServerPackets.hostRoom))
+            {
+                _packet.Write(_msg);
+                SendTCPData(_toClient, _packet);
+            }
+        }
+
+        public static void JoinRoomValidation(int _toClient, string _msg)
+        {
+            using (Packet _packet = new Packet((int)ServerPackets.joinRoom))
+            {
+                _packet.Write(_msg);
+                SendTCPData(_toClient, _packet);
+            }
+        }
+
+        public static void BroadcastPlayerJoined(string _codeRoom, int _id, string _uname)
+        {
+            using (Packet _packet = new Packet((int)ServerPackets.playerJoined))
+            {
+                _packet.Write(_codeRoom);
+                _packet.Write(_id);
+                _packet.Write(_uname);
+                SendTCPDataToAll(_packet);
+            }
+        }
+
         public static void BroadcastChatbox(string _uname, string _msg)
         {
             using (Packet _packet = new Packet((int)ServerPackets.chatbox))

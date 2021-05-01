@@ -11,6 +11,10 @@ namespace Leder_Efter_Server
         welcome = 1,
         signIn,
         signUp,
+        hostRoom,
+        joinRoom,
+
+        playerJoined,
         chatbox,
         randomize,
         color,
@@ -26,6 +30,10 @@ namespace Leder_Efter_Server
         welcomeRequest = 1,
         signInRequest,
         signUpRequest,
+        hostRoomRequest,
+        joinRoomRequest,
+
+
         chatboxRequest,
         randomizeRequest,
         colorRequest,

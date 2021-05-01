@@ -17,7 +17,7 @@ namespace Leder_Efter_Server
 
             Console.WriteLine($"{Server.clients[_fromClient].tcp.socket.Client.RemoteEndPoint} connected successfully and is now player {_fromClient}");
             Server.total = _fromClient;
-            Console.WriteLine("Totl = " + Server.total);
+            //Console.WriteLine("Total Player Join = " + Server.total);
             if (_fromClient != _clientIdCheck)
             {
                 Console.WriteLine($"Player ID: {_fromClient}) has assumed the wrong client ID ({_clientIdCheck})!");
@@ -41,6 +41,21 @@ namespace Leder_Efter_Server
             ClientData.Account _account = _packet.ReadObject<ClientData.Account>();
             string validation = AccountHandler.SignUp(_account.username, _account.password);
             ServerSend.SignUpValidation(_fromClient, validation);
+        }
+
+        public static void HostRoomReceived(int _fromClient, Packet _packet)
+        {
+            string code = _packet.ReadString();
+            string notif = RoomHandler.HostRoomValidation(code);
+            ServerSend.HostRoomValidation(_fromClient, notif);
+        }
+
+        public static void JoinRoomReceived(int _fromClient, Packet _packet)
+        {
+            string code = _packet.ReadString();
+            string uname = _packet.ReadString();
+            string notif = RoomHandler.JoinRoomValidation(code, uname);
+            ServerSend.JoinRoomValidation(_fromClient, notif);
         }
 
         public static void ChatboxReceived(int _fromClient, Packet _packet)
