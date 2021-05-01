@@ -150,8 +150,8 @@ namespace Leder_Efter_Server
                 _packet.Write(pos.position);
                 _packet.Write(pos.rotation);
 
-                SendTCPData(_toClient, _packet);
-                //SendTCPDataToAll(_packet);
+                //SendTCPData(_toClient, _packet);
+                SendTCPDataToAll(_toClient, _packet);
             }
         }
 
