@@ -13,6 +13,8 @@ namespace Leder_Efter_Server
         signUp,
         hostRoom,
         joinRoom,
+        leaveRoom,
+        destroyRoom,
 
         playerJoined,
         chatbox,
@@ -32,7 +34,8 @@ namespace Leder_Efter_Server
         signUpRequest,
         hostRoomRequest,
         joinRoomRequest,
-
+        leaveRoomRequest,
+        destroyRoomRequest,
 
         chatboxRequest,
         randomizeRequest,

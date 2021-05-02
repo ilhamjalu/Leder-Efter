@@ -12,6 +12,8 @@ public enum ServerPackets
     signUp,
     hostRoom,
     joinRoom,
+    leaveRoom,
+    destroyRoom,
 
     playerJoined,
     chatbox,
@@ -31,7 +33,8 @@ public enum ClientPackets
     signUpRequest,
     hostRoomRequest,
     joinRoomRequest,
-
+    leaveRoomRequest,
+    destroyRoomRequest,
 
     chatboxRequest,
     randomizeRequest,

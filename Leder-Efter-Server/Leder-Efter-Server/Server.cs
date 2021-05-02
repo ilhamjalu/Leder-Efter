@@ -133,13 +133,15 @@ namespace Leder_Efter_Server
                 { (int)ClientPackets.signUpRequest, ServerHandle.SignUpReceived },
                 { (int)ClientPackets.hostRoomRequest, ServerHandle.HostRoomReceived },
                 { (int)ClientPackets.joinRoomRequest, ServerHandle.JoinRoomReceived },
+                { (int)ClientPackets.leaveRoomRequest, ServerHandle.LeaveRoomReceived },
+                { (int)ClientPackets.destroyRoomRequest, ServerHandle.DestroyRoomReceived },
+
                 { (int)ClientPackets.chatboxRequest, ServerHandle.ChatboxReceived },
                 { (int)ClientPackets.randomizeRequest, ServerHandle.RandomizeReceived },
                 { (int)ClientPackets.colorRequest, ServerHandle.ColorReceived },
                 { (int)ClientPackets.mintakSpawnDong, ServerHandle.MintakPlayer },
                 { (int)ClientPackets.playerMovement, ServerHandle.PlayerMovement },
                 { (int)ClientPackets.readyGan, ServerHandle.PlayerReady }
-
             };
 
             Console.WriteLine("Initialized packets");

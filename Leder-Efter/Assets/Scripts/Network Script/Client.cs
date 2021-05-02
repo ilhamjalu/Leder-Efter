@@ -15,9 +15,9 @@ public class Client : MonoBehaviour
     public string myUname = "";
     public string myPass = "";
     public int myId = 0;
-    public int isLogin = 0;
-    public int isPlay = 0;
-    public bool host = false;
+    public bool isLogin = false;
+    public bool isPlay = false;
+    public bool isHost = false;
 
     public TCP tcp;
     public UDP udp;
@@ -250,6 +250,9 @@ public class Client : MonoBehaviour
             { (int)ServerPackets.signUp, ClientHandle.SignUpValidation },
             { (int)ServerPackets.hostRoom, ClientHandle.HostRoomValidation },
             { (int)ServerPackets.joinRoom, ClientHandle.JoinRoomValidation },
+            { (int)ServerPackets.leaveRoom, ClientHandle.LeaveRoomValidation },
+            { (int)ServerPackets.destroyRoom, ClientHandle.DestroyRoomValidation },
+
             { (int)ServerPackets.playerJoined, ClientHandle.AddPlayerToDatabase },
             { (int)ServerPackets.chatbox, ClientHandle.ChatboxValidation },
             { (int)ServerPackets.randomize, ClientHandle.RandomizeValidation },

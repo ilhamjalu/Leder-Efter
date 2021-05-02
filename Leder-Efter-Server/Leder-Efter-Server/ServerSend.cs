@@ -104,6 +104,25 @@ namespace Leder_Efter_Server
             }
         }
 
+        public static void BroadcastPlayerLeft(string _codeRoom, string _uname)
+        {
+            using (Packet _packet = new Packet((int)ServerPackets.leaveRoom))
+            {
+                _packet.Write(_codeRoom);
+                _packet.Write(_uname);
+                SendTCPDataToAll(_packet);
+            }
+        }
+
+        public static void BroadcastDestroyRoom(string _codeRoom)
+        {
+            using (Packet _packet = new Packet((int)ServerPackets.destroyRoom))
+            {
+                _packet.Write(_codeRoom);
+                SendTCPDataToAll(_packet);
+            }
+        }
+
         public static void BroadcastPlayerJoined(string _codeRoom, int _id, string _uname)
         {
             using (Packet _packet = new Packet((int)ServerPackets.playerJoined))

@@ -25,7 +25,7 @@ public class ClientHandle : MonoBehaviour
         UILoginManager.instance.notif.text = _msg;
 
         if (_msg == "login was successful")
-            Client.instance.isLogin = 1;
+            Client.instance.isLogin = true;
     }
 
     public static void SignUpValidation(Packet _packet)
@@ -40,7 +40,9 @@ public class ClientHandle : MonoBehaviour
         UIMenuManager.instance.notifText.text = _msg;
 
         if (_msg == "room created succesfully")
-            Client.instance.host = true;
+        {
+            Client.instance.isHost = true;
+        }
     }
 
     public static void JoinRoomValidation(Packet _packet)
@@ -49,7 +51,31 @@ public class ClientHandle : MonoBehaviour
         UIMenuManager.instance.notifText.text = _msg;
 
         if (_msg == "joined succesfully")
-            Client.instance.isPlay = 1;
+        {
+            Client.instance.isPlay = true;
+        }
+    }
+
+    public static void LeaveRoomValidation(Packet _packet)
+    {
+        string _codeRoom = _packet.ReadString();
+        string _uname = _packet.ReadString();
+
+        if (_codeRoom == RoomDatabase.instance.roomCode)
+        {
+            RoomDatabase.instance.RemovePlayerFromDatabase(_uname);
+            UILobbyManager.instance.playerLeft = true;
+        }
+    }
+
+    public static void DestroyRoomValidation(Packet _packet)
+    {
+        string _codeRoom = _packet.ReadString();
+
+        if (_codeRoom == RoomDatabase.instance.roomCode)
+        {
+            RoomDatabase.instance.RemoveDatabase();
+        }
     }
 
     public static void AddPlayerToDatabase(Packet _packet)

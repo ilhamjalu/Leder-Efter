@@ -49,4 +49,24 @@ public class RoomDatabase : MonoBehaviour
         if (!found)
             playerDatabase.Add(new PlayerDatabase(id, uname, new Vector3(0, 0, 0), 0));
     }
+
+    public void RemovePlayerFromDatabase(string uname)
+    {
+        for (int i = 0; i < playerDatabase.Count; i++)
+        {
+            if (uname == playerDatabase[i].username)
+            {
+                playerDatabase.RemoveAt(i);
+            }
+        }
+    }
+
+    public void RemoveDatabase()
+    {
+        roomCode = "";
+        playerDatabase.RemoveRange(0, playerDatabase.Count);
+        Client.instance.isPlay = false;
+        Client.instance.isHost = false;
+        UILobbyManager.instance.GoToScene("MainMenu");
+    }
 }

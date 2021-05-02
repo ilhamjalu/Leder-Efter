@@ -43,7 +43,7 @@ namespace Leder_Efter_Server
             {
                 if (code == oroom.code)
                 {
-                    return "create failed! change your room code";
+                    return "create failed! change your room code or join with that code";
                 }
             }
 
@@ -97,6 +97,37 @@ namespace Leder_Efter_Server
             }
 
             //PrintDetailRoom();
+        }
+
+        public static void LeaveRoom(string _code, string _uname)
+        {
+            for (int i = 0; i < roomDatabase.Count; i++)
+            {
+                if (_code == roomDatabase[i].code)
+                {
+                    for (int j = 0; j < roomDatabase[i].playerJoinedDatabase.Count; j++)
+                    {
+                        if (_uname == roomDatabase[i].playerJoinedDatabase[j].username)
+                        {
+                            roomDatabase[i].playerJoinedDatabase.RemoveAt(j);
+                            Console.WriteLine($"Player-{_uname} Leave Room w/ Code: {_code}");
+                        }
+                    }
+                }
+            }
+        }
+
+        public static void DestroyRoom(string _code)
+        {
+            for (int i = 0; i < roomDatabase.Count; i++)
+            {
+                if (_code == roomDatabase[i].code)
+                {
+                    roomDatabase.RemoveAt(i);
+                    ServerSend.BroadcastDestroyRoom(_code);
+                    Console.WriteLine($"Room Destroyed Succesfully w/ Code: {_code}");
+                }
+            }
         }
 
         public static void PrintDetailRoom()

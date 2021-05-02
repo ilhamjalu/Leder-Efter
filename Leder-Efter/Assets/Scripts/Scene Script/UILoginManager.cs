@@ -42,7 +42,7 @@ public class UILoginManager : MonoBehaviour
 
     private void Update()
     {
-        if (Client.instance.isLogin == 1)
+        if (Client.instance.isLogin)
         {
             SceneManager.LoadScene(toScene);
         }

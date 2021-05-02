@@ -58,6 +58,20 @@ namespace Leder_Efter_Server
             ServerSend.JoinRoomValidation(_fromClient, notif);
         }
 
+        public static void LeaveRoomReceived(int _fromClient, Packet _packet)
+        {
+            string code = _packet.ReadString();
+            string uname = _packet.ReadString();
+            RoomHandler.LeaveRoom(code, uname);
+            ServerSend.BroadcastPlayerLeft(code, uname);
+        }
+
+        public static void DestroyRoomReceived(int _fromClient, Packet _packet)
+        {
+            string code = _packet.ReadString();
+            RoomHandler.DestroyRoom(code);
+        }
+
         public static void ChatboxReceived(int _fromClient, Packet _packet)
         {
             ClientData.Chatbox _chatbox = _packet.ReadObject<ClientData.Chatbox>();

@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using UnityEngine;
 using TMPro;
@@ -23,10 +24,10 @@ public class UILobbyManager : MonoBehaviour
 
     [Header("Lobby Attribute")]
     public TextMeshProUGUI helloText;
-    public RoomDatabase roomManager;
     public GameObject readyButton;
 
     [Header("Player Data Attribute")]
+    public bool playerLeft = false;
     public List<PlayerPrint> playerPrint;
 
     private void Awake()
@@ -42,19 +43,55 @@ public class UILobbyManager : MonoBehaviour
 
     void Start()
     {
-        roomManager = GameObject.Find("ClientManager").GetComponent<RoomDatabase>();
-        helloText.text = $"you're in room #{roomManager.roomCode}";
+        helloText.text = $"you're in room #{RoomDatabase.instance.roomCode}";
 
-        if (Client.instance.host)
+        if (Client.instance.isHost)
             readyButton.SetActive(true);
     }
 
-    void Update()
+    private void Update()
     {
-        for (int i = 0; i < roomManager.playerDatabase.Count; i++)
+        if (playerLeft)
         {
-            playerPrint[i].background.SetActive(true);
-            playerPrint[i].playerName.text = roomManager.playerDatabase[i].username;
+            for (int i = 0; i < playerPrint.Count; i++)
+            {
+                playerPrint[i].background.SetActive(false);
+            }
+
+            playerLeft = false;
         }
+        else if (!playerLeft)
+        {
+            for (int i = 0; i < RoomDatabase.instance.playerDatabase.Count; i++)
+            {
+                playerPrint[i].background.SetActive(true);
+                
+                if (RoomDatabase.instance.playerDatabase[i].username == Client.instance.myUname)
+                    playerPrint[i].playerName.text = $"(you) {RoomDatabase.instance.playerDatabase[i].username}";
+                else
+                    playerPrint[i].playerName.text = RoomDatabase.instance.playerDatabase[i].username;
+            }
+        }
+    }
+
+    public void LeaveDestroyRoom()
+    {
+        if (!Client.instance.isHost)
+        {
+            ClientSend.LeaveRoomRequest(RoomDatabase.instance.roomCode, Client.instance.myUname);
+            RoomDatabase.instance.RemoveDatabase();
+        }
+        else
+        {
+            ClientSend.DestroyRoomRequest(RoomDatabase.instance.roomCode);
+            GoToScene("MainMenu");
+        }
+
+        Client.instance.isPlay = false;
+    }
+
+    public void GoToScene(string scene)
+    {
+        SceneManager.LoadScene(scene);
     }
 }

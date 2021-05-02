@@ -10,8 +10,6 @@ public class UIMenuManager : MonoBehaviour
     public static UIMenuManager instance;
 
     [Header("MainMenu Attribute")]
-    public Client clientManager;
-    public RoomDatabase roomManager;
     public TextMeshProUGUI helloText;
     public GameObject onlineChoice;
     public bool touched = false;
@@ -34,14 +32,12 @@ public class UIMenuManager : MonoBehaviour
 
     private void Start()
     {
-        clientManager = GameObject.Find("ClientManager").GetComponent<Client>();
-        roomManager = GameObject.Find("ClientManager").GetComponent<RoomDatabase>();
-        helloText.text = $"hello, {clientManager.myUname} #{clientManager.myId}";
+        helloText.text = $"hello, {Client.instance.myUname} #{Client.instance.myId}";
     }
 
     private void Update()
     {
-        if (Client.instance.isPlay == 1)
+        if (Client.instance.isPlay)
             SceneManager.LoadScene(goToScene);
     }
 
@@ -61,13 +57,27 @@ public class UIMenuManager : MonoBehaviour
 
     public void ChooseHost()
     {
-        ClientSend.HostRoomRequest(codeRoom.text);
-        roomManager.roomCode = codeRoom.text;
+        if (codeRoom.text != "")
+        {
+            ClientSend.HostRoomRequest(codeRoom.text);
+            RoomDatabase.instance.roomCode = codeRoom.text;
+        }
+        else
+        {
+            notifText.text = "please input the room code!";
+        }
     }
 
     public void ChooseJoin()
     {
-        ClientSend.JoinRoomRequest(codeRoom.text, clientManager.myUname);
-        roomManager.roomCode = codeRoom.text;
+        if (codeRoom.text != "")
+        {
+            ClientSend.JoinRoomRequest(codeRoom.text, Client.instance.myUname);
+            RoomDatabase.instance.roomCode = codeRoom.text;
+        }
+        else
+        {
+            notifText.text = "please input the room code!";
+        }
     }
 }
