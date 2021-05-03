@@ -12,6 +12,7 @@ namespace Leder_Efter_Server
         public static int dataBufferSize = 4096;
         public ClientData.Position player;
 
+        public static int identity = 0;
         public int id = 1;
         public TCP tcp;
         public UDP udp;
@@ -51,6 +52,7 @@ namespace Leder_Efter_Server
                 stream.BeginRead(receiveBuffer, 0, dataBufferSize, ReceiveCallback, null);
 
                 ServerSend.Welcome(id, "Welcome to the server!");
+                identity = id;
             }
 
             public void SendData(Packet _packet)
@@ -75,7 +77,7 @@ namespace Leder_Efter_Server
                     int _byteLength = stream.EndRead(_result);
                     if (_byteLength <= 0)
                     {
-                        // TODO: disconnect
+                        Server.clients[id].Disconnect();
                         return;
                     }
 
@@ -88,7 +90,7 @@ namespace Leder_Efter_Server
                 catch (Exception _ex)
                 {
                     Console.WriteLine($"Error receiving TCP data: {_ex}");
-                    // TODO: disconnect
+                    Server.clients[id].Disconnect();
                 }
             }
 
@@ -137,6 +139,15 @@ namespace Leder_Efter_Server
 
                 return false;
             }
+
+            public void Disconnect()
+            {
+                socket.Close();
+                stream = null;
+                receivedData = null;
+                receiveBuffer = null;
+                socket = null;
+            }
         }
 
         public class UDP
@@ -174,6 +185,11 @@ namespace Leder_Efter_Server
                     }
                 });
             }
+
+            public void Disconnect()
+            {
+                endPoint = null;
+            }
         }
 
         public void SendtoGame(string uname)
@@ -198,6 +214,16 @@ namespace Leder_Efter_Server
                    ServerSend.PositionBroadcast(client.id, player);
                 }
             }
+        }
+
+        private void Disconnect()
+        {
+            Console.WriteLine($"{tcp.socket.Client.RemoteEndPoint} has disconnected.");
+            AccountHandler.SignOut(id);
+
+            player = null;
+            tcp.Disconnect();
+            udp.Disconnect();
         }
     }
 }

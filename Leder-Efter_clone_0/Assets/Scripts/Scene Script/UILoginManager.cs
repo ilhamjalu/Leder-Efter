@@ -46,11 +46,6 @@ public class UILoginManager : MonoBehaviour
         {
             SceneManager.LoadScene(toScene);
         }
-
-        //if (PlayerPrefs.GetInt("ClientIsLogin") == 1)
-        //{
-        //    ClientSend.SignInRequest(PlayerPrefs.GetString("ClientUname"), PlayerPrefs.GetString("ClientPass"));
-        //}
     }
 
     public void ConnectToServer()

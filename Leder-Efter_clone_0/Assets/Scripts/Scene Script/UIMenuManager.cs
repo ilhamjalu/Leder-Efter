@@ -12,6 +12,7 @@ public class UIMenuManager : MonoBehaviour
     [Header("MainMenu Attribute")]
     public TextMeshProUGUI helloText;
     public GameObject onlineChoice;
+    public GameObject quitChoice;
     public bool touched = false;
 
     [Header("HostJoin Attribute")]
@@ -78,6 +79,19 @@ public class UIMenuManager : MonoBehaviour
         else
         {
             notifText.text = "please input the room code!";
+        }
+    }
+
+    public void ChooseQuit(int index)
+    {
+        if (index == 0)
+            quitChoice.SetActive(true);
+        else if (index == 1)
+            quitChoice.SetActive(false);
+        else if (index == 2)
+        {
+            Client.instance.Disconnect();
+            SceneManager.LoadScene("LoginPage");
         }
     }
 }

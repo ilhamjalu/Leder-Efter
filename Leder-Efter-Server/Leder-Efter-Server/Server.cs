@@ -15,20 +15,14 @@ namespace Leder_Efter_Server
         public delegate void PacketHandler(int _fromClient, Packet _packet);
         public static Dictionary<int, Client> clients = new Dictionary<int, Client>();
         public static Dictionary<int, PacketHandler> packetHandlers;
-        public static List<AccountDatabase> accountDatabase;
-        public static List<ReadyDatabase> readyDatabase;
+        public static List<AccountDatabase> accountDatabase = new List<AccountDatabase>();
+        public static List<ReadyDatabase> readyDatabase = new List<ReadyDatabase>();
 
         private static TcpListener tcpListener;
         private static UdpClient udpListener;
 
         public static void Start(int _maxPlayer, int _port)
         {
-            readyDatabase = new List<ReadyDatabase>();
-            accountDatabase = new List<AccountDatabase>();
-            accountDatabase.Add(new AccountDatabase("admin", "admin", false));
-            accountDatabase.Add(new AccountDatabase("123", "123", false));
-            accountDatabase.Add(new AccountDatabase("111", "111", false));
-
             MaxPlayers = _maxPlayer;
             Port = _port;
 
