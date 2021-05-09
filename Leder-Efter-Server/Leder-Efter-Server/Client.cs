@@ -216,6 +216,11 @@ namespace Leder_Efter_Server
             }
         }
 
+        public void SendPositionIntoGame(string _playerName)
+        {
+
+        }
+
         private void Disconnect()
         {
             Console.WriteLine($"{tcp.socket.Client.RemoteEndPoint} has disconnected.");

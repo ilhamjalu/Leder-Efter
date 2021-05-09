@@ -83,6 +83,8 @@
     <Compile Include="Assets\Scripts\Network Script\Packet.cs" />
     <Compile Include="Assets\Scripts\Network Script\ThreadManager.cs" />
     <Compile Include="Assets\Scripts\Scene Script\ChatBoxSystem.cs" />
+    <Compile Include="Assets\Scripts\Scene Script\GameManager.cs" />
+    <Compile Include="Assets\Scripts\Scene Script\PlayerCharManager.cs" />
     <Compile Include="Assets\Scripts\Scene Script\PlayerManager.cs" />
     <Compile Include="Assets\Scripts\Scene Script\SceneMoving.cs" />
     <Compile Include="Assets\Scripts\Scene Script\UIChatboxManager.cs" />

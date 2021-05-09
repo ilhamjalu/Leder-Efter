@@ -90,6 +90,30 @@ public class ClientHandle : MonoBehaviour
         }
     }
 
+    public static void StartMatchValidation(Packet _packet)
+    {
+        string _codeRoom = _packet.ReadString();
+        bool _isPlay = _packet.ReadBool();
+
+        if (_codeRoom == RoomDatabase.instance.roomCode)
+        {
+            RoomDatabase.instance.isPlay = _isPlay;
+        }
+    }
+
+    public static void PlayerPositionValidation(Packet _packet)
+    {
+        string _codeRoom = _packet.ReadString();
+        int _id = _packet.ReadInt();
+        int _controlHorizontal = _packet.ReadInt();
+        int _controlVertical = _packet.ReadInt();
+
+        if (_codeRoom == RoomDatabase.instance.roomCode)
+        {
+            GameManager.instance.UpdatePlayerPosition(_id, _controlHorizontal, _controlVertical);
+        }
+    }
+
     public static void ChatboxValidation(Packet _packet)
     {
         ClientData.Chatbox _chatbox = _packet.ReadObject<ClientData.Chatbox>();

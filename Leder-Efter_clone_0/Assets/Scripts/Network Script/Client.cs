@@ -277,6 +277,8 @@ public class Client : MonoBehaviour
             { (int)ServerPackets.joinRoom, ClientHandle.JoinRoomValidation },
             { (int)ServerPackets.leaveRoom, ClientHandle.LeaveRoomValidation },
             { (int)ServerPackets.destroyRoom, ClientHandle.DestroyRoomValidation },
+            { (int)ServerPackets.startMatch, ClientHandle.StartMatchValidation },
+            { (int)ServerPackets.playerPosition, ClientHandle.PlayerPositionValidation },
 
             { (int)ServerPackets.playerJoined, ClientHandle.AddPlayerToDatabase },
             { (int)ServerPackets.chatbox, ClientHandle.ChatboxValidation },

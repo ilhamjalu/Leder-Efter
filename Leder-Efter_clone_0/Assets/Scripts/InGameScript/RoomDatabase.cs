@@ -7,15 +7,14 @@ public class PlayerDatabase
 {
     public int id;
     public string username;
-    public Vector3 position;
-    public int score;
+    public int typeChar;
+    public PlayerCharManager character;
 
-    public PlayerDatabase(int _id, string _uname, Vector3 _pos, int _score)
+    public PlayerDatabase(int _id, string _uname, int _type)
     {
         id = _id;
         username = _uname;
-        position = _pos;
-        score = _score;
+        typeChar = _type;
     }
 }
 
@@ -24,6 +23,7 @@ public class RoomDatabase : MonoBehaviour
     public static RoomDatabase instance;
 
     public string roomCode;
+    public bool isPlay;
     public List<PlayerDatabase> playerDatabase = new List<PlayerDatabase>();
 
     private void Awake()
@@ -47,7 +47,7 @@ public class RoomDatabase : MonoBehaviour
         }
 
         if (!found)
-            playerDatabase.Add(new PlayerDatabase(id, uname, new Vector3(0, 0, 0), 0));
+            playerDatabase.Add(new PlayerDatabase(id, uname, 0));
     }
 
     public void RemovePlayerFromDatabase(string uname)

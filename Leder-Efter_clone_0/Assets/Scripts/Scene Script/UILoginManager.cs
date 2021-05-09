@@ -11,7 +11,7 @@ public class UILoginManager : MonoBehaviour
 
     public GameObject startMenu;
     public GameObject loginPage;
-    public InputField ipField;
+    public TMP_InputField ipField;
     public TextMeshProUGUI notif;
     public string toScene;
 

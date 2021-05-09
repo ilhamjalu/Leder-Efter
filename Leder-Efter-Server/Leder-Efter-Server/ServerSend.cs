@@ -104,6 +104,17 @@ namespace Leder_Efter_Server
             }
         }
 
+        public static void BroadcastPlayerJoined(string _codeRoom, int _id, string _uname)
+        {
+            using (Packet _packet = new Packet((int)ServerPackets.playerJoined))
+            {
+                _packet.Write(_codeRoom);
+                _packet.Write(_id);
+                _packet.Write(_uname);
+                SendTCPDataToAll(_packet);
+            }
+        }
+
         public static void BroadcastPlayerLeft(string _codeRoom, string _uname)
         {
             using (Packet _packet = new Packet((int)ServerPackets.leaveRoom))
@@ -123,14 +134,25 @@ namespace Leder_Efter_Server
             }
         }
 
-        public static void BroadcastPlayerJoined(string _codeRoom, int _id, string _uname)
+        public static void BroadcastStartMatch(string _codeRoom, bool _isPlay)
         {
-            using (Packet _packet = new Packet((int)ServerPackets.playerJoined))
+            using (Packet _packet = new Packet((int)ServerPackets.startMatch))
+            {
+                _packet.Write(_codeRoom);
+                _packet.Write(_isPlay);
+                SendTCPDataToAll(_packet);
+            }
+        }
+
+        public static void BroadcastPlayerPosition(string _codeRoom, int _id, int _controlHorizontal, int _controlVertical)
+        {
+            using (Packet _packet = new Packet((int)ServerPackets.playerPosition))
             {
                 _packet.Write(_codeRoom);
                 _packet.Write(_id);
-                _packet.Write(_uname);
-                SendTCPDataToAll(_packet);
+                _packet.Write(_controlHorizontal);
+                _packet.Write(_controlVertical);
+                SendUDPDataToAll(_packet);
             }
         }
 
@@ -183,8 +205,8 @@ namespace Leder_Efter_Server
             using (Packet _packet = new Packet((int)ServerPackets.color))
             {
                 var a = RandomizeHandler.ColorRandomizer();
-                
-                _packet.Write(a); 
+
+                _packet.Write(a);
                 SendTCPDataToAll(_packet);
             }
         }

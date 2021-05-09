@@ -129,6 +129,8 @@ namespace Leder_Efter_Server
                 { (int)ClientPackets.joinRoomRequest, ServerHandle.JoinRoomReceived },
                 { (int)ClientPackets.leaveRoomRequest, ServerHandle.LeaveRoomReceived },
                 { (int)ClientPackets.destroyRoomRequest, ServerHandle.DestroyRoomReceived },
+                { (int)ClientPackets.startMatchRequest, ServerHandle.StartMatchReceived },
+                { (int)ClientPackets.playerPositionRequest, ServerHandle.PlayerPositionReceived },
 
                 { (int)ClientPackets.chatboxRequest, ServerHandle.ChatboxReceived },
                 { (int)ClientPackets.randomizeRequest, ServerHandle.RandomizeReceived },

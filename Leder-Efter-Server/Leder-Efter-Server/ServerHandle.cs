@@ -53,8 +53,9 @@ namespace Leder_Efter_Server
         public static void JoinRoomReceived(int _fromClient, Packet _packet)
         {
             string code = _packet.ReadString();
+            int id = _packet.ReadInt();
             string uname = _packet.ReadString();
-            string notif = RoomHandler.JoinRoomValidation(code, uname);
+            string notif = RoomHandler.JoinRoomValidation(code, id, uname);
             ServerSend.JoinRoomValidation(_fromClient, notif);
         }
 
@@ -70,6 +71,24 @@ namespace Leder_Efter_Server
         {
             string code = _packet.ReadString();
             RoomHandler.DestroyRoom(code);
+            ServerSend.BroadcastDestroyRoom(code);
+        }
+
+        public static void StartMatchReceived(int _fromClient, Packet _packet)
+        {
+            string code = _packet.ReadString();
+            bool isPlay = _packet.ReadBool();
+            RoomHandler.StartMatch(code, isPlay);
+            ServerSend.BroadcastStartMatch(code, isPlay);
+        }
+
+        public static void PlayerPositionReceived(int _fromClient, Packet _packet)
+        {
+            string code = _packet.ReadString();
+            int id = _packet.ReadInt();
+            int controlHorizontal = _packet.ReadInt();
+            int controlVertical = _packet.ReadInt();
+            ServerSend.BroadcastPlayerPosition(code, id, controlHorizontal, controlVertical);
         }
 
         public static void ChatboxReceived(int _fromClient, Packet _packet)

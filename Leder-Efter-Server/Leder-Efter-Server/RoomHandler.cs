@@ -8,6 +8,7 @@ namespace Leder_Efter_Server
     class RoomDatabase
     {
         public string code { get; set; }
+        public bool isPlay { get; set; }
 
         public List<PlayerJoinedDatabase> playerJoinedDatabase = new List<PlayerJoinedDatabase>();
 
@@ -21,15 +22,13 @@ namespace Leder_Efter_Server
     {
         public int id { get; set; }
         public string username { get; set; }
-        public Vector3 position { get; set; }
-        public int score { get; set; }
+        public int type { get; set; }
 
-        public PlayerJoinedDatabase(int _id, string _uname, Vector3 _pos, int _score)
+        public PlayerJoinedDatabase(int _id, string _uname, int _type)
         {
             id = _id;
             username = _uname;
-            position = _pos;
-            score = _score;
+            type = _type;
         }
     }
 
@@ -57,13 +56,13 @@ namespace Leder_Efter_Server
             Console.WriteLine($"Room Created Succesfully w/ Code: {code}");
         }
 
-        public static string JoinRoomValidation(string code, string uname)
+        public static string JoinRoomValidation(string code, int id, string uname)
         {
             foreach (RoomDatabase oroom in roomDatabase)
             {
                 if (code == oroom.code)
                 {
-                    JoinRoom(code, uname);
+                    JoinRoom(code, id, uname);
                     return "joined succesfully";
                 }
             }
@@ -71,7 +70,7 @@ namespace Leder_Efter_Server
             return "join failed! change your room code or host a new room";
         }
 
-        public static void JoinRoom(string _code, string _uname)
+        public static void JoinRoom(string _code, int id,string _uname)
         {
             for (int i = 0; i < roomDatabase.Count; i++)
             {
@@ -86,7 +85,7 @@ namespace Leder_Efter_Server
 
                     if (!playerJoined)
                     {
-                        roomDatabase[i].playerJoinedDatabase.Add(new PlayerJoinedDatabase(roomDatabase[i].playerJoinedDatabase.Count, _uname, new Vector3(0, 0, 0), 0));
+                        roomDatabase[i].playerJoinedDatabase.Add(new PlayerJoinedDatabase(id, _uname, 0));
 
                         for (int j = 0; j < roomDatabase[i].playerJoinedDatabase.Count; j++)
                         {
@@ -124,8 +123,19 @@ namespace Leder_Efter_Server
                 if (_code == roomDatabase[i].code)
                 {
                     roomDatabase.RemoveAt(i);
-                    ServerSend.BroadcastDestroyRoom(_code);
                     Console.WriteLine($"Room Destroyed Succesfully w/ Code: {_code}");
+                }
+            }
+        }
+
+        public static void StartMatch(string _code, bool _isPlay)
+        {
+            for (int i = 0; i < roomDatabase.Count; i++)
+            {
+                if (_code == roomDatabase[i].code)
+                {
+                    roomDatabase[i].isPlay = _isPlay;
+                    Console.WriteLine($"Room w/ Code: {_code} isPlay");
                 }
             }
         }

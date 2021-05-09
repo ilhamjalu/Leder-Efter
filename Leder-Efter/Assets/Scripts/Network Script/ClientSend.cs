@@ -61,11 +61,12 @@ public class ClientSend : MonoBehaviour
         }
     }
 
-    public static void JoinRoomRequest(string code, string uname)
+    public static void JoinRoomRequest(string code, int id, string uname)
     {
         using (Packet _packet = new Packet((int)ClientPackets.joinRoomRequest))
         {
             _packet.Write(code);
+            _packet.Write(id);
             _packet.Write(uname);
             SendTCPData(_packet);
         }
@@ -87,6 +88,28 @@ public class ClientSend : MonoBehaviour
         {
             _packet.Write(code);
             SendTCPData(_packet);
+        }
+    }
+
+    public static void StartMatch(string code)
+    {
+        using (Packet _packet = new Packet((int)ClientPackets.startMatchRequest))
+        {
+            _packet.Write(code);
+            _packet.Write(true);
+            SendTCPData(_packet);
+        }
+    }
+
+    public static void PlayerPosition(string code, int id, int controlHorizontal, int controlVertical)
+    {
+        using (Packet _packet = new Packet((int)ClientPackets.playerPositionRequest))
+        {
+            _packet.Write(code);
+            _packet.Write(id);
+            _packet.Write(controlHorizontal);
+            _packet.Write(controlVertical);
+            SendUDPData(_packet);
         }
     }
 

@@ -15,8 +15,10 @@ namespace Leder_Efter_Server
         joinRoom,
         leaveRoom,
         destroyRoom,
-
         playerJoined,
+        startMatch,
+        playerPosition,
+
         chatbox,
         randomize,
         color,
@@ -36,6 +38,8 @@ namespace Leder_Efter_Server
         joinRoomRequest,
         leaveRoomRequest,
         destroyRoomRequest,
+        startMatchRequest,
+        playerPositionRequest,
 
         chatboxRequest,
         randomizeRequest,

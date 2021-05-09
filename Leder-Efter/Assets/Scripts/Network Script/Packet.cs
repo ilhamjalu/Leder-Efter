@@ -14,8 +14,10 @@ public enum ServerPackets
     joinRoom,
     leaveRoom,
     destroyRoom,
-
     playerJoined,
+    startMatch,
+    playerPosition,
+
     chatbox,
     randomize,
     color,
@@ -35,6 +37,8 @@ public enum ClientPackets
     joinRoomRequest,
     leaveRoomRequest,
     destroyRoomRequest,
+    startMatchRequest,
+    playerPositionRequest,
 
     chatboxRequest,
     randomizeRequest,

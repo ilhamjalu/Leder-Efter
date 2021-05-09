@@ -73,7 +73,7 @@ public class UIMenuManager : MonoBehaviour
     {
         if (codeRoom.text != "")
         {
-            ClientSend.JoinRoomRequest(codeRoom.text, Client.instance.myUname);
+            ClientSend.JoinRoomRequest(codeRoom.text, Client.instance.myId, Client.instance.myUname);
             RoomDatabase.instance.roomCode = codeRoom.text;
         }
         else

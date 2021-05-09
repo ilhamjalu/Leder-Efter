@@ -3164,6 +3164,34 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 11438280, guid: d116d631aa1172e4ab048a4f0947c27c, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 11438280, guid: d116d631aa1172e4ab048a4f0947c27c, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11438280, guid: d116d631aa1172e4ab048a4f0947c27c, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Target
+      value: 
+      objectReference: {fileID: 1576064257}
+    - target: {fileID: 11438280, guid: d116d631aa1172e4ab048a4f0947c27c, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 11438280, guid: d116d631aa1172e4ab048a4f0947c27c, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
+      value: StartMatch
+      objectReference: {fileID: 0}
+    - target: {fileID: 11438280, guid: d116d631aa1172e4ab048a4f0947c27c, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_StringArgument
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 11438280, guid: d116d631aa1172e4ab048a4f0947c27c, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
     - target: {fileID: 11449838, guid: d116d631aa1172e4ab048a4f0947c27c, type: 3}
       propertyPath: m_Text
       value: Start Match
@@ -4176,6 +4204,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   helloText: {fileID: 964323483}
   readyButton: {fileID: 1403036661}
+  ready: {fileID: 0}
   playerLeft: 0
   playerPrint:
   - background: {fileID: 1207829027}
