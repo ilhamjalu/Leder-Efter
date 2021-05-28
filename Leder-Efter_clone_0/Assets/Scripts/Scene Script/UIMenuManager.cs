@@ -42,6 +42,11 @@ public class UIMenuManager : MonoBehaviour
             SceneManager.LoadScene(goToScene);
     }
 
+    public void GameTest()
+    {
+        SceneManager.LoadScene("PropHunt");
+    }
+
     public void ChooseOnline(int code)
     {
         if (!touched && code == 1)

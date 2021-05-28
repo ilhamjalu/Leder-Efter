@@ -71,4 +71,23 @@ public class PlayerCharManager : MonoBehaviour
 		theScale.x *= -1;
 		transform.localScale = theScale;
 	}
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.CompareTag("Answer"))
+        {
+            var score = GameObject.Find("Score").GetComponent<ScoreManager>();
+
+            if (collision.gameObject.name == "1")
+            {
+                Debug.Log("Jawaban Benar");
+                score.scorePlayer++;
+            }
+            else
+            {
+                Debug.Log("Jawaban Salah");
+                score.scorePlayer--;
+            }
+        }
+    }
 }

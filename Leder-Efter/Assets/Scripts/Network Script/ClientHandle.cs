@@ -154,7 +154,7 @@ public class ClientHandle : MonoBehaviour
 
     public static void ColorHandler(Packet _packet)
     {
-        var a = GameObject.Find("Soal");
+        var a = GameObject.Find("Question");
         a.GetComponent<Text>().text = _packet.ReadString();
     }
 

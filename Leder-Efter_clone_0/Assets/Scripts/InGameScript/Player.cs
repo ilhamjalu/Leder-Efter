@@ -67,13 +67,40 @@ public class Player : MonoBehaviour
         //{
         //    Debug.Log("Bennr");
         //}
+
+        //if (collision.CompareTag("Answer"))
+        //{
+        //    var score = GameObject.Find("Score").GetComponent<ScoreManager>();
+
+        //    if (collision.gameObject.name == "1")
+        //    {
+        //        Debug.Log("Jawaban Benar");
+        //        score.scorePlayer++;
+        //    }
+        //    else
+        //    {
+        //        Debug.Log("Jawaban Salah");
+        //        score.scorePlayer--;
+        //    }
+        //}
     }
 
-    private void OnTriggerExit2D(Collider2D collision)
+    private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.CompareTag("Object"))
+        if (collision.CompareTag("Answer"))
         {
-            hide = false;
+            var score = GameObject.Find("Score").GetComponent<ScoreManager>();
+
+            if (collision.gameObject.name == "1")
+            {
+                Debug.Log("Jawaban Benar");
+                score.scorePlayer++;
+            }
+            else
+            {
+                Debug.Log("Jawaban Salah");
+                score.scorePlayer--;
+            }
         }
     }
 }

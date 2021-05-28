@@ -745,19 +745,23 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\farhn\\.nuget\\packages\\": {}
+    "C:\\Users\\ilham\\.nuget\\packages\\": {},
+    "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\gt\\Repository\\Leder-Efter-Project\\Leder-Efter\\Leder-Efter-Server\\Leder-Efter-Server\\Leder-Efter-Server.csproj",
+      "projectUniqueName": "D:\\PENS\\Unity Project\\Leder Efter\\Leder-Efter-Server\\Leder-Efter-Server\\Leder-Efter-Server.csproj",
       "projectName": "Leder-Efter-Server",
-      "projectPath": "D:\\gt\\Repository\\Leder-Efter-Project\\Leder-Efter\\Leder-Efter-Server\\Leder-Efter-Server\\Leder-Efter-Server.csproj",
-      "packagesPath": "C:\\Users\\farhn\\.nuget\\packages\\",
-      "outputPath": "D:\\gt\\Repository\\Leder-Efter-Project\\Leder-Efter\\Leder-Efter-Server\\Leder-Efter-Server\\obj\\",
+      "projectPath": "D:\\PENS\\Unity Project\\Leder Efter\\Leder-Efter-Server\\Leder-Efter-Server\\Leder-Efter-Server.csproj",
+      "packagesPath": "C:\\Users\\ilham\\.nuget\\packages\\",
+      "outputPath": "D:\\PENS\\Unity Project\\Leder Efter\\Leder-Efter-Server\\Leder-Efter-Server\\obj\\",
       "projectStyle": "PackageReference",
+      "fallbackFolders": [
+        "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
+      ],
       "configFilePaths": [
-        "C:\\Users\\farhn\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\ilham\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -769,7 +773,6 @@
       },
       "frameworks": {
         "netcoreapp2.1": {
-          "targetAlias": "netcoreapp2.1",
           "projectReferences": {}
         }
       },
@@ -781,10 +784,8 @@
     },
     "frameworks": {
       "netcoreapp2.1": {
-        "targetAlias": "netcoreapp2.1",
         "dependencies": {
           "Microsoft.NETCore.App": {
-            "suppressParent": "All",
             "target": "Package",
             "version": "[2.1.0, )",
             "autoReferenced": true
@@ -795,16 +796,10 @@
           }
         },
         "imports": [
-          "net461",
-          "net462",
-          "net47",
-          "net471",
-          "net472",
-          "net48"
+          "net461"
         ],
         "assetTargetFallback": true,
-        "warn": true,
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.103\\RuntimeIdentifierGraph.json"
+        "warn": true
       }
     }
   }

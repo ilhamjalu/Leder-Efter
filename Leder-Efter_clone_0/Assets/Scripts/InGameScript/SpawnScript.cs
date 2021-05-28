@@ -25,14 +25,15 @@ public class SpawnScript : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        warna.Add(new Warna("Merah", Color.red));
+        warna.Add(new Warna("Biru", Color.blue));
     }
 
     // Update is called once per frame
     void Update()
     {
-        warna.Add(new Warna("Merah", Color.red));
-        warna.Add(new Warna("Biru", Color.blue));
+        //warna.Add(new Warna("Merah", Color.red));
+        //warna.Add(new Warna("Biru", Color.blue));
         if (Input.GetKeyDown(KeyCode.Z))
         {
             RandomPick();
