@@ -15,6 +15,7 @@ public class TimerScript : MonoBehaviour
     {
         time = gameObject.GetComponent<Text>();
         cl = GameObject.Find("Question").GetComponent<ColorManager>().checkWarna;
+        ClientSend.ColorRequest();
     }
 
     // Update is called once per frame
@@ -31,15 +32,15 @@ public class TimerScript : MonoBehaviour
         //int seconds = Mathf.FloorToInt(waktu - minutes * 60);
         //string niceTime = string.Format("{0:00}:{1:00}", minutes, seconds);
         //time.text = niceTime;
-        time.text = "TIME : " + a;
+        time.text = "TIME : " + b;
 
         if(waktu <= 0)
         {
-            time.text = "TIME : 0";
-            StartCoroutine(AnswerDelay());
-            //ClientSend.ColorRequest();
-            //waktu = 10;
-            //Debug.Log("Second");
+            //time.text = "TIME : 0";
+            //StartCoroutine(AnswerDelay());
+            ClientSend.ColorRequest();
+            waktu = 10;
+            Debug.Log("Second");
         }
     }
 

@@ -32,7 +32,7 @@ namespace Leder_Efter_Server
             //var result = RandomizeDatabase.color[index];
             //RandomizeDatabase.color.RemoveAt(index);
             var result = RandomizeDatabase.color[indexColor];
-            Console.WriteLine("COlor : " + result);
+            Console.WriteLine("Color: " + result);
             return result;
         }
 
@@ -44,7 +44,7 @@ namespace Leder_Efter_Server
             //var result = RandomizeDatabase.textColor[index];
             //RandomizeDatabase.textColor.RemoveAt(index);
             var result = RandomizeDatabase.textColor[indexText];
-            Console.WriteLine("TEXT"+result);
+            Console.WriteLine("Text: " + result);
             return result;
         }
 
