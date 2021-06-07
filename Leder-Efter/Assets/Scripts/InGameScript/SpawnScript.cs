@@ -27,6 +27,7 @@ public class SpawnScript : MonoBehaviour
     {
         warna.Add(new Warna("Merah", Color.red));
         warna.Add(new Warna("Biru", Color.blue));
+        warna.Add(new Warna("Hijau", Color.green));
     }
 
     // Update is called once per frame
@@ -34,10 +35,16 @@ public class SpawnScript : MonoBehaviour
     {
         //warna.Add(new Warna("Merah", Color.red));
         //warna.Add(new Warna("Biru", Color.blue));
-        if (Input.GetKeyDown(KeyCode.Z))
+        //if (Input.GetKeyDown(KeyCode.Z))
+        //{
+        //    RandomPick();
+        //    ChangeColor();
+        //}
+        if (soal.GetComponent<ColorManager>().checkWarna == true)
         {
             RandomPick();
-            ChangeColor();
+            //ChangeColor();
+            soal.GetComponent<ColorManager>().checkWarna = false;
         }
     }
 
@@ -52,13 +59,15 @@ public class SpawnScript : MonoBehaviour
                     if(spawn[j].gameObject.name == "1")
                     {
                         spawn[j].gameObject.GetComponent<Image>().color = warna[i].Value;
-                        return;
+                        //return;
+                    }
+
+                    if (spawn[j].gameObject.name == "2")
+                    {
+                        spawn[j].gameObject.GetComponent<Image>().color = soal.GetComponent<Text>().color;
+                        //return;
                     }
                 }
-            }
-            else
-            {
-
             }
         }
     }
@@ -79,5 +88,6 @@ public class SpawnScript : MonoBehaviour
         {
             spawn[1].gameObject.name = "1";
         }
+        ChangeColor();
     }
 }

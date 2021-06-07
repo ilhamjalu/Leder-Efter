@@ -25,7 +25,8 @@ namespace Leder_Efter_Server
         spawnPlayer,
         playerPos,
         playerRot,
-        readyGaQi
+        readyGaQi,
+        winlose
     }
 
     /// <summary>Sent from client to server.</summary>

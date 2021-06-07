@@ -155,7 +155,19 @@ public class ClientHandle : MonoBehaviour
     public static void ColorHandler(Packet _packet)
     {
         var a = GameObject.Find("Question");
+        var b = a.GetComponent<ColorManager>();
         a.GetComponent<Text>().text = _packet.ReadString();
+        var soal = _packet.ReadString();
+
+        for (int i = 0; i < b.warnaSoal.Count; i++)
+        {
+            if (soal == b.warnaSoal[i].Word)
+            {
+                a.GetComponent<Text>().color = b.warnaSoal[i].Value;
+                b.checkWarna = true;
+            }
+        }
+
     }
 
     public static void PlayerPos(Packet _packet)
@@ -182,5 +194,10 @@ public class ClientHandle : MonoBehaviour
         Quaternion rot = _packet.ReadQuaternion();
 
         SpawnPlayer.players[id].transform.rotation = rot;
+    }
+
+    public static void WinLoseCon(Packet _packet)
+    {
+
     }
 }

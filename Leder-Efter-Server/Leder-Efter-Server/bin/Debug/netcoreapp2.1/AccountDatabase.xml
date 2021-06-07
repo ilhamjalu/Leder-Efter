@@ -1,15 +1,15 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ArrayOfAccountDatabase xmlns:i="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://schemas.datacontract.org/2004/07/Leder_Efter_Server">
 	<AccountDatabase>
-		<active>false</active>
-		<identity>0</identity>
+		<active>true</active>
+		<identity>2</identity>
 		<password>111</password>
 		<totalScore>0</totalScore>
 		<username>111</username>
 	</AccountDatabase>
 	<AccountDatabase>
-		<active>true</active>
-		<identity>1</identity>
+		<active>false</active>
+		<identity>0</identity>
 		<password>123</password>
 		<totalScore>0</totalScore>
 		<username>123</username>

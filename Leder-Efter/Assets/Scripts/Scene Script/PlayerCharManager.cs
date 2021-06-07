@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class PlayerCharManager : MonoBehaviour
 {
+    public bool playerAnswer = false;
+
 	public int horizontal = 0;
 	public int vertical = 0;
 	public float maxSpeed = 5f;

@@ -287,7 +287,8 @@ public class Client : MonoBehaviour
             { (int)ServerPackets.spawnPlayer, ClientHandle.PlayerPos },
             { (int)ServerPackets.playerPos, ClientHandle.PlayerPosition },
             { (int)ServerPackets.playerRot, ClientHandle.PlayerRotation },
-            { (int)ServerPackets.readyGaQi, ClientHandle.ReadyDong }
+            { (int)ServerPackets.readyGaQi, ClientHandle.ReadyDong },
+            { (int)ServerPackets.winlose, ClientHandle.WinLoseCon }
         };
 
         Debug.Log("Initialized packets");

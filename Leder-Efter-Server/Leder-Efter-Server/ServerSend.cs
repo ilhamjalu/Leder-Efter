@@ -205,9 +205,20 @@ namespace Leder_Efter_Server
             using (Packet _packet = new Packet((int)ServerPackets.color))
             {
                 var a = RandomizeHandler.ColorRandomizer();
+                var b = RandomizeHandler.TextColor();
 
-                _packet.Write(a);
-                SendTCPDataToAll(_packet);
+                if(a == b)
+                {
+                    RandomizeHandler.ColorRandomizer();
+                    RandomizeHandler.TextColor();
+                }
+                else
+                {
+                    RandomizeHandler.DeleteList();
+                    _packet.Write(a);
+                    _packet.Write(b);
+                    SendTCPDataToAll(_packet);
+                }
             }
         }
 
