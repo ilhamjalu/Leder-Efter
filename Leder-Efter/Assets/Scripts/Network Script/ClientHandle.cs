@@ -158,6 +158,7 @@ public class ClientHandle : MonoBehaviour
         var b = a.GetComponent<ColorManager>();
         a.GetComponent<Text>().text = _packet.ReadString();
         var soal = _packet.ReadString();
+        b.questionCounter++;
 
         for (int i = 0; i < b.warnaSoal.Count; i++)
         {

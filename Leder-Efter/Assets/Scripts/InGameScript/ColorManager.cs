@@ -16,8 +16,11 @@ public class WarnaSoal
 
 public class ColorManager : MonoBehaviour
 {
+    public GameObject go;
+    public GameObject score;
     public List<Warna> warnaSoal = new List<Warna>();
     public bool checkWarna = false;
+    public int questionCounter = 0;
 
     // Start is called before the first frame update
     void Start()
@@ -39,6 +42,14 @@ public class ColorManager : MonoBehaviour
         {
             //ClientSend.ColorRequest();
             Debug.Log("TEST DEBUG");
+        }
+
+        if (questionCounter == 5)
+        {
+            Time.timeScale = 0;
+            go.SetActive(true);
+            go.GetComponent<GameOverScript>().scoreEnd = score.GetComponent<ScoreManager>().scorePlayer;
+            Debug.Log("GAME OVER");
         }
     }
 }

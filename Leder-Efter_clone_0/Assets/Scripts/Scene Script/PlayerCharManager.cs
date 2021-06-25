@@ -4,8 +4,6 @@ using UnityEngine;
 
 public class PlayerCharManager : MonoBehaviour
 {
-    public bool playerAnswer = false;
-
 	public int horizontal = 0;
 	public int vertical = 0;
 	public float maxSpeed = 5f;
@@ -74,22 +72,42 @@ public class PlayerCharManager : MonoBehaviour
 		transform.localScale = theScale;
 	}
 
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        if (collision.CompareTag("Answer"))
-        {
-            var score = GameObject.Find("Score").GetComponent<ScoreManager>();
+    //private void OnTriggerEnter2D(Collider2D collision)
+    //{
+    //    if (collision.CompareTag("Answer"))
+    //    {
+    //        var score = GameObject.Find("Score").GetComponent<ScoreManager>();
 
-            if (collision.gameObject.name == "1")
-            {
-                Debug.Log("Jawaban Benar");
-                score.scorePlayer++;
-            }
-            else
-            {
-                Debug.Log("Jawaban Salah");
-                score.scorePlayer--;
-            }
-        }
-    }
+    //        if (collision.gameObject.name == "1")
+    //        {
+    //            Debug.Log("Jawaban Benar");
+    //            score.scorePlayer++;
+    //        }
+    //        else
+    //        {
+    //            Debug.Log("Jawaban Salah");
+    //            score.scorePlayer--;
+    //        }
+    //    }
+    //}
+
+    //private void OnTriggerStay2D(Collider2D collision)
+    //{
+    //    if (collision.CompareTag("Answer"))
+    //    {
+    //        var score = GameObject.Find("Score").GetComponent<ScoreManager>();
+    //        var kondisi = GameObject.Find("Spawn").GetComponent<SpawnScript>();
+
+    //        if (collision.gameObject.name == "1" && kondisi.playerAnswer == true)
+    //        {
+    //            Debug.Log("Jawaban Benar");
+    //            score.scorePlayer++;
+    //        }
+    //        else if (collision.gameObject.name == "2" && kondisi.playerAnswer == true)
+    //        {
+    //            Debug.Log("Jawaban Salah");
+    //            score.scorePlayer--;
+    //        }
+    //    }
+    //}
 }

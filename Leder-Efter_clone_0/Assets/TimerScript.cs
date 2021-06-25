@@ -9,10 +9,12 @@ public class TimerScript : MonoBehaviour
     Text time;
     float waktu = 10;
     bool cl;
+    SpawnScript ss;
 
     // Start is called before the first frame update
     void Start()
     {
+        ss = GameObject.Find("Spawn").GetComponent<SpawnScript>();
         time = gameObject.GetComponent<Text>();
         cl = GameObject.Find("Question").GetComponent<ColorManager>().checkWarna;
         ClientSend.ColorRequest();
@@ -21,7 +23,10 @@ public class TimerScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Timer();
+        if (waktu >= 0)
+        {
+            Timer();
+        }
     }
 
     void Timer()
@@ -36,11 +41,12 @@ public class TimerScript : MonoBehaviour
 
         if(waktu <= 0)
         {
-            //time.text = "TIME : 0";
-            //StartCoroutine(AnswerDelay());
-            ClientSend.ColorRequest();
-            waktu = 10;
-            Debug.Log("Second");
+            time.text = "TIME : 0";
+            ss.playerAnswer = true;
+            StartCoroutine(AnswerDelay());
+            //ClientSend.ColorRequest();
+            //waktu = 10;
+            //Debug.Log("Second");
         }
     }
 
@@ -49,6 +55,7 @@ public class TimerScript : MonoBehaviour
         yield return new WaitForSeconds(3);
         ClientSend.ColorRequest();
         waktu = 10;
+        ss.playerAnswer = false;
         Debug.Log("Second");
     }
 }

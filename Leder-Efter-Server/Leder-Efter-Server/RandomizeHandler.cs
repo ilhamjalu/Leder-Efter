@@ -32,7 +32,7 @@ namespace Leder_Efter_Server
             //var result = RandomizeDatabase.color[index];
             //RandomizeDatabase.color.RemoveAt(index);
             var result = RandomizeDatabase.color[indexColor];
-            Console.WriteLine("Color: " + result);
+            Console.WriteLine("Color: " + result);    
             return result;
         }
 
@@ -48,15 +48,15 @@ namespace Leder_Efter_Server
             return result;
         }
 
-        public static void DeleteList()
-        {
-            RandomizeDatabase.color.RemoveAt(indexColor);
-            RandomizeDatabase.textColor.RemoveAt(indexText);
+        //public static void DeleteList()
+        //{
+        //    RandomizeDatabase.color.RemoveAt(indexColor);
+        //    RandomizeDatabase.textColor.RemoveAt(indexText);
 
-            if (RandomizeDatabase.color.Count <= 0 || RandomizeDatabase.textColor.Count <= 0)
-            {
+        //    if (RandomizeDatabase.color.Count <= 0 || RandomizeDatabase.textColor.Count <= 0)
+        //    {
 
-            }
-        }
+        //    }
+        //}
     }
 }

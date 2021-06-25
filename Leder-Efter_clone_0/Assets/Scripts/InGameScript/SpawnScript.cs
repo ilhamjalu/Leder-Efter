@@ -17,6 +17,7 @@ public class Warna
 
 public class SpawnScript : MonoBehaviour
 {
+    public bool playerAnswer = false;
     public Text soal;
     public GameObject[] spawn;
     public List<Warna> warna = new List<Warna>();

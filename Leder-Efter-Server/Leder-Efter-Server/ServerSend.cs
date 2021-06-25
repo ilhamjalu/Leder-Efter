@@ -214,7 +214,9 @@ namespace Leder_Efter_Server
                 }
                 else
                 {
-                    RandomizeHandler.DeleteList();
+                    //RandomizeHandler.DeleteList();
+
+                    //Console.WriteLine("JUMLAH COLOR DAN TEXT : " + RandomizeDatabase.color.Count + RandomizeDatabase.textColor.Count);
                     _packet.Write(a);
                     _packet.Write(b);
                     SendTCPDataToAll(_packet);
