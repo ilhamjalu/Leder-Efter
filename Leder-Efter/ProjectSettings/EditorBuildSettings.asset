@@ -15,12 +15,9 @@ EditorBuildSettings:
     path: Assets/Scenes/LobbyRoom.unity
     guid: d4053446d53ecfe4d908094db315c853
   - enabled: 1
-    path: Assets/Scenes/GameScene.unity
+    path: Assets/Scenes/ColorScene.unity
     guid: 3473c175c2391594cbf400679f57816e
   - enabled: 1
-    path: Assets/Scenes/PropHunt.unity
-    guid: 2ab23bb729d227349a25f2781d04e108
-  - enabled: 0
-    path: Assets/Scenes/Lobby.unity
-    guid: 0a70bc9f65d6ce34280d940a723f402f
+    path: Assets/Scenes/TriviaScene.unity
+    guid: 4ee5f4ae9ed3f2e44b2c82ae810dcb5e
   m_configObjects: {}

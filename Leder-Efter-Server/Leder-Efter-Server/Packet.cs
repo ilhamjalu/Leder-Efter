@@ -26,7 +26,9 @@ namespace Leder_Efter_Server
         playerPos,
         playerRot,
         readyGaQi,
-        winlose
+        winlose,
+
+        triviaQuestion
     }
 
     /// <summary>Sent from client to server.</summary>
@@ -47,7 +49,9 @@ namespace Leder_Efter_Server
         colorRequest,
         playerMovement,
         mintakSpawnDong,
-        readyGan
+        readyGan,
+
+        triviaQuestionRequest
     }
 
     public class Packet : IDisposable

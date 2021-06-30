@@ -12,6 +12,7 @@ public class UIRandomizeManager : MonoBehaviour
     public TextMeshProUGUI colorText;
     public TextMeshProUGUI totalText;
     public string statusReady;
+    public string timer;
 
     private void Awake()
     {

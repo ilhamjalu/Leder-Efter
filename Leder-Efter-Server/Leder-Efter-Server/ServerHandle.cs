@@ -77,9 +77,9 @@ namespace Leder_Efter_Server
         public static void StartMatchReceived(int _fromClient, Packet _packet)
         {
             string code = _packet.ReadString();
-            bool isPlay = _packet.ReadBool();
-            RoomHandler.StartMatch(code, isPlay);
-            ServerSend.BroadcastStartMatch(code, isPlay);
+            string gameType = _packet.ReadString();
+            RoomHandler.StartMatch(code, true, gameType);
+            ServerSend.BroadcastStartMatch(code, gameType);
         }
 
         public static void PlayerPositionReceived(int _fromClient, Packet _packet)
@@ -144,6 +144,14 @@ namespace Leder_Efter_Server
             string a = "TESTING";
 
             Server.clients[_fromClient].SendtoGame(a);
+        }
+
+        public static void TriviaQuestionReceived(int _fromClient, Packet _packet)
+        {
+            bool ready = _packet.ReadBool();
+            int maxQuestion = _packet.ReadInt();
+
+            TriviaHandler.SetQuestion(ready, maxQuestion);
         }
 
         public static void PlayerMovement(int _fromClient, Packet _packet)

@@ -134,12 +134,12 @@ namespace Leder_Efter_Server
             }
         }
 
-        public static void BroadcastStartMatch(string _codeRoom, bool _isPlay)
+        public static void BroadcastStartMatch(string _codeRoom, string _gameType)
         {
             using (Packet _packet = new Packet((int)ServerPackets.startMatch))
             {
                 _packet.Write(_codeRoom);
-                _packet.Write(_isPlay);
+                _packet.Write(_gameType);
                 SendTCPDataToAll(_packet);
             }
         }
@@ -235,6 +235,15 @@ namespace Leder_Efter_Server
 
                 //SendTCPData(_toClient, _packet);
                 SendTCPDataToAll(_toClient, _packet);
+            }
+        }
+
+        public static void TriviaQuestionBroadcast(int questionResult)
+        {
+            using (Packet _packet = new Packet((int)ServerPackets.triviaQuestion))
+            {
+                _packet.Write(questionResult);
+                SendTCPDataToAll(_packet);
             }
         }
 

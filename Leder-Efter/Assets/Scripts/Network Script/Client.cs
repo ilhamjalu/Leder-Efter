@@ -288,7 +288,10 @@ public class Client : MonoBehaviour
             { (int)ServerPackets.playerPos, ClientHandle.PlayerPosition },
             { (int)ServerPackets.playerRot, ClientHandle.PlayerRotation },
             { (int)ServerPackets.readyGaQi, ClientHandle.ReadyDong },
-            { (int)ServerPackets.winlose, ClientHandle.WinLoseCon }
+            { (int)ServerPackets.winlose, ClientHandle.WinLoseCon },
+
+            //trivia packets
+            { (int)ServerPackets.triviaQuestion, ClientHandle.TriviaQuestionValidation }
         };
 
         Debug.Log("Initialized packets");

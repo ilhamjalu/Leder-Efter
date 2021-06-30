@@ -137,7 +137,9 @@ namespace Leder_Efter_Server
                 { (int)ClientPackets.colorRequest, ServerHandle.ColorReceived },
                 { (int)ClientPackets.mintakSpawnDong, ServerHandle.MintakPlayer },
                 { (int)ClientPackets.playerMovement, ServerHandle.PlayerMovement },
-                { (int)ClientPackets.readyGan, ServerHandle.PlayerReady }
+                { (int)ClientPackets.readyGan, ServerHandle.PlayerReady },
+
+                { (int)ClientPackets.triviaQuestionRequest, ServerHandle.TriviaQuestionReceived }
             };
 
             Console.WriteLine("Initialized packets");

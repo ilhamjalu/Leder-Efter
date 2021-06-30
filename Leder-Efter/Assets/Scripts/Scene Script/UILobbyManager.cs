@@ -24,8 +24,11 @@ public class UILobbyManager : MonoBehaviour
 
     [Header("Lobby Attribute")]
     public TextMeshProUGUI helloText;
-    public GameObject readyButton;
-    public Button ready;
+    public GameObject colorButton;
+    public GameObject triviaButton;
+    public Button color;
+    public Button trivia;
+    public string gameType;
 
     [Header("Player Data Attribute")]
     public bool playerLeft = false;
@@ -45,10 +48,14 @@ public class UILobbyManager : MonoBehaviour
     void Start()
     {
         helloText.text = $"you're in room #{RoomDatabase.instance.roomCode}";
-        ready = readyButton.GetComponent<Button>();
+        color = colorButton.GetComponent<Button>();
+        trivia = triviaButton.GetComponent<Button>();
 
         if (Client.instance.isHost)
-            readyButton.SetActive(true);
+        {
+            colorButton.SetActive(true);
+            triviaButton.SetActive(true);
+        }
     }
 
     private void Update()
@@ -76,10 +83,7 @@ public class UILobbyManager : MonoBehaviour
         }
 
         if (RoomDatabase.instance.isPlay)
-            GoToScene("GameScene");
-
-        //if (RoomDatabase.instance.playerDatabase.Count < 3)
-        //    ready.interactable = false;
+            GoToScene(gameType + "Scene");
     }
 
     public void LeaveDestroyRoom()
@@ -98,9 +102,9 @@ public class UILobbyManager : MonoBehaviour
         Client.instance.isPlay = false;
     }
 
-    public void StartMatch()
+    public void StartMatch(string gameType)
     {
-        ClientSend.StartMatch(RoomDatabase.instance.roomCode);
+        ClientSend.StartMatch(RoomDatabase.instance.roomCode, gameType);
     }
 
     public void GoToScene(string scene)

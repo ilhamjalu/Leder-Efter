@@ -25,7 +25,9 @@ public enum ServerPackets
     playerPos,
     playerRot,
     readyGaQi,
-    winlose
+    winlose,
+
+    triviaQuestion
 }
 
 /// <summary>Sent from client to server.</summary>
@@ -46,7 +48,9 @@ public enum ClientPackets
     colorRequest,
     playerMovement,
     mintakSpawnDong, 
-    readyGan
+    readyGan,
+
+    triviaQuestionRequest
 }
 
 public class Packet : IDisposable

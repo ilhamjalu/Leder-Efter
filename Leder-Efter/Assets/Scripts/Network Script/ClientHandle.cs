@@ -93,11 +93,12 @@ public class ClientHandle : MonoBehaviour
     public static void StartMatchValidation(Packet _packet)
     {
         string _codeRoom = _packet.ReadString();
-        bool _isPlay = _packet.ReadBool();
+        string _gameType = _packet.ReadString();
 
         if (_codeRoom == RoomDatabase.instance.roomCode)
         {
-            RoomDatabase.instance.isPlay = _isPlay;
+            UILobbyManager.instance.gameType = _gameType;
+            RoomDatabase.instance.isPlay = true;
         }
     }
 
@@ -200,5 +201,11 @@ public class ClientHandle : MonoBehaviour
     public static void WinLoseCon(Packet _packet)
     {
 
+    }
+
+    public static void TriviaQuestionValidation(Packet _packet)
+    {
+        int questionResult = _packet.ReadInt();
+        UITriviaManager.instance.SetQuestion(questionResult);
     }
 }

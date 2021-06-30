@@ -91,12 +91,12 @@ public class ClientSend : MonoBehaviour
         }
     }
 
-    public static void StartMatch(string code)
+    public static void StartMatch(string code, string gameType)
     {
         using (Packet _packet = new Packet((int)ClientPackets.startMatchRequest))
         {
             _packet.Write(code);
-            _packet.Write(true);
+            _packet.Write(gameType);
             SendTCPData(_packet);
         }
     }
@@ -157,6 +157,16 @@ public class ClientSend : MonoBehaviour
     {
         using (Packet _packet = new Packet((int)ClientPackets.mintakSpawnDong))
         {   
+            SendTCPData(_packet);
+        }
+    }
+
+    public static void TriviaRequest()
+    {
+        using (Packet _packet = new Packet((int)ClientPackets.triviaQuestionRequest))
+        {
+            _packet.Write(true);
+            _packet.Write(UITriviaManager.instance.trivia.Count);
             SendTCPData(_packet);
         }
     }

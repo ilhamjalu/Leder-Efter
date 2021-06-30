@@ -128,14 +128,14 @@ namespace Leder_Efter_Server
             }
         }
 
-        public static void StartMatch(string _code, bool _isPlay)
+        public static void StartMatch(string _code, bool _isPlay, string _gameType)
         {
             for (int i = 0; i < roomDatabase.Count; i++)
             {
                 if (_code == roomDatabase[i].code)
                 {
                     roomDatabase[i].isPlay = _isPlay;
-                    Console.WriteLine($"Room w/ Code: {_code} isPlay");
+                    Console.WriteLine($"Room w/ Code: {_code} isPlay {_gameType}");
                 }
             }
         }
