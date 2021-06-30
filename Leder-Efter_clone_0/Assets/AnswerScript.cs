@@ -14,6 +14,7 @@ public class AnswerScript : MonoBehaviour
             if (gameObject.name == "1" && kondisi.playerAnswer == true)
             {
                 Debug.Log("Jawaban Benar");
+                kondisi.playerAnswer = false;
                 score.scorePlayer++;
             }
             else if (gameObject.name == "2" && kondisi.playerAnswer == true)

@@ -55,7 +55,7 @@ public class TimerScript : MonoBehaviour
         yield return new WaitForSeconds(3);
         ClientSend.ColorRequest();
         waktu = 10;
-        ss.playerAnswer = false;
+        //ss.playerAnswer = false;
         Debug.Log("Second");
     }
 }
