@@ -15,7 +15,7 @@ namespace Leder_Efter_Server
             Thread mainThread = new Thread(MainThread);
             mainThread.Start();
 
-            Server.Start(30, 7777);
+            Server.Start(30, 26950);
         } 
 
         private static void MainThread()
