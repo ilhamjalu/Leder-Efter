@@ -100,6 +100,8 @@ public class UITriviaManager : MonoBehaviour
         {
             ClientSend.DestroyRoomRequest(RoomDatabase.instance.roomCode);
             SceneManager.LoadScene(scene);
+            string uname = GameObject.Find("ClientManager").GetComponent<Client>().myUname;
+            ClientSend.UpScore(uname,score);
             Debug.Log("Room Was Destroyed Successfully");
         }
 

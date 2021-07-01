@@ -184,5 +184,24 @@ public class ClientSend : MonoBehaviour
             SendUDPData(_packet);
         }
     }
+
+    public static void UpScore(string uname, int score)
+    {
+        using (Packet _packet = new Packet((int)ClientPackets.storeScore))
+        {
+            _packet.Write(uname);
+            _packet.Write(score);
+            SendTCPData(_packet);
+        }
+    }
+
+    public static void ScoreRequest(string uname)
+    {
+        using (Packet _packet = new Packet((int)ClientPackets.scoreRequest))
+        {
+            _packet.Write(uname);
+            SendTCPData(_packet);
+        }
+    }
     #endregion
 }

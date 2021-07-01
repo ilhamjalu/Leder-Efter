@@ -198,14 +198,15 @@ public class ClientHandle : MonoBehaviour
         SpawnPlayer.players[id].transform.rotation = rot;
     }
 
-    public static void WinLoseCon(Packet _packet)
-    {
-
-    }
-
     public static void TriviaQuestionValidation(Packet _packet)
     {
         int questionResult = _packet.ReadInt();
         UITriviaManager.instance.SetQuestion(questionResult);
+    }
+
+    public static void ScoreReceiver(Packet _packet)
+    {
+        int score = _packet.ReadInt();
+        UIMenuManager.instance.playerScore = score;
     }
 }

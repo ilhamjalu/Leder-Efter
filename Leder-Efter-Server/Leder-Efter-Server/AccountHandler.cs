@@ -101,6 +101,32 @@ namespace Leder_Efter_Server
             }
         }
 
+        public static void AddScore(string uname, int score)
+        {
+            Server.accountDatabase = LoadDatabase<List<AccountDatabase>>("AccountDatabase.xml");
+
+            foreach (AccountDatabase oacc in Server.accountDatabase)
+            {
+                if (uname == oacc.username)
+                {
+                    oacc.totalScore += score;
+                }
+            }
+        }
+
+        public static void ShowScore(string uname)
+        {
+            Server.accountDatabase = LoadDatabase<List<AccountDatabase>>("AccountDatabase.xml");
+
+            foreach (AccountDatabase oacc in Server.accountDatabase)
+            {
+                if (uname == oacc.username)
+                {
+                    ServerSend.SendScore(oacc.totalScore);
+                }
+            }
+        }
+
         public static void AddDataToDatabase()
         {
             accountDatabaseTemp = LoadDatabase<List<AccountDatabase>>("AccountDatabase.xml");

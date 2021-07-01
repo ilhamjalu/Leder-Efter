@@ -28,7 +28,8 @@ namespace Leder_Efter_Server
         readyGaQi,
         winlose,
 
-        triviaQuestion
+        triviaQuestion,
+        scoreSent
     }
 
     /// <summary>Sent from client to server.</summary>
@@ -51,7 +52,9 @@ namespace Leder_Efter_Server
         mintakSpawnDong,
         readyGan,
 
-        triviaQuestionRequest
+        triviaQuestionRequest,
+        storeScore,
+        scoreRequest
     }
 
     public class Packet : IDisposable

@@ -155,6 +155,21 @@ namespace Leder_Efter_Server
             TriviaHandler.SetQuestion(ready, maxQuestion);
         }
 
+        public static void ScoreReceived(int _fromClient, Packet _packet)
+        {
+            string uname = _packet.ReadString();
+            int score = _packet.ReadInt();
+
+            AccountHandler.AddScore(uname, score);
+        }
+
+        public static void ScoreSent(int _fromClient, Packet _packet)
+        {
+            string uname = _packet.ReadString();
+
+            AccountHandler.ShowScore(uname);
+        }
+
         public static void PlayerMovement(int _fromClient, Packet _packet)
         {
             bool[] _inputs = new bool[_packet.ReadInt()];

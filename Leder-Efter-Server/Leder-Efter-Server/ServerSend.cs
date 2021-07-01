@@ -247,6 +247,15 @@ namespace Leder_Efter_Server
             }
         }
 
+        public static void SendScore(int score)
+        {
+            using (Packet _packet = new Packet((int)ServerPackets.scoreSent))
+            {
+                _packet.Write(score);
+                SendTCPDataToAll(_packet);
+            }
+        }
+
         public static void PlayerPos(ClientData.Position pos)
         {
             using (Packet _packet = new Packet((int)ServerPackets.playerPos))

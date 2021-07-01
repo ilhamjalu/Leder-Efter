@@ -27,7 +27,8 @@ public enum ServerPackets
     readyGaQi,
     winlose,
 
-    triviaQuestion
+    triviaQuestion,
+    scoreSent
 }
 
 /// <summary>Sent from client to server.</summary>
@@ -50,7 +51,9 @@ public enum ClientPackets
     mintakSpawnDong, 
     readyGan,
 
-    triviaQuestionRequest
+    triviaQuestionRequest,
+    storeScore,
+    scoreRequest
 }
 
 public class Packet : IDisposable

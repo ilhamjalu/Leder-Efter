@@ -10,7 +10,9 @@ public class UIMenuManager : MonoBehaviour
     public static UIMenuManager instance;
 
     [Header("MainMenu Attribute")]
+    public int playerScore;
     public TextMeshProUGUI helloText;
+    public TextMeshProUGUI scoreText;
     public GameObject onlineChoice;
     public GameObject quitChoice;
     public bool touched = false;
@@ -34,12 +36,15 @@ public class UIMenuManager : MonoBehaviour
     private void Start()
     {
         helloText.text = $"hello, {Client.instance.myUname} #{Client.instance.myId}";
+        ClientSend.ScoreRequest(Client.instance.myUname);
     }
 
     private void Update()
     {
         if (Client.instance.isPlay)
             SceneManager.LoadScene(goToScene);
+
+        scoreText.text = "Score : " + playerScore;
     }
 
     public void GameTest()

@@ -288,7 +288,7 @@ public class Client : MonoBehaviour
             { (int)ServerPackets.playerPos, ClientHandle.PlayerPosition },
             { (int)ServerPackets.playerRot, ClientHandle.PlayerRotation },
             { (int)ServerPackets.readyGaQi, ClientHandle.ReadyDong },
-            { (int)ServerPackets.winlose, ClientHandle.WinLoseCon },
+            { (int)ServerPackets.scoreSent, ClientHandle.ScoreReceiver },
 
             //trivia packets
             { (int)ServerPackets.triviaQuestion, ClientHandle.TriviaQuestionValidation }

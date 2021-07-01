@@ -4,7 +4,7 @@
 		<active>false</active>
 		<identity>0</identity>
 		<password>111</password>
-		<totalScore>0</totalScore>
+		<totalScore>8</totalScore>
 		<username>111</username>
 	</AccountDatabase>
 	<AccountDatabase>
@@ -20,5 +20,12 @@
 		<password>admin</password>
 		<totalScore>0</totalScore>
 		<username>admin</username>
+	</AccountDatabase>
+	<AccountDatabase>
+		<active>false</active>
+		<identity>1</identity>
+		<password>123</password>
+		<totalScore>0</totalScore>
+		<username>ilham</username>
 	</AccountDatabase>
 </ArrayOfAccountDatabase>
