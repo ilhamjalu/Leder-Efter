@@ -109,7 +109,7 @@ public class ClientSend : MonoBehaviour
             _packet.Write(id);
             _packet.Write(controlHorizontal);
             _packet.Write(controlVertical);
-            SendUDPData(_packet);
+            SendTCPData(_packet);
         }
     }
 

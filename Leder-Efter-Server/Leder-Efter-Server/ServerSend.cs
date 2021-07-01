@@ -152,7 +152,7 @@ namespace Leder_Efter_Server
                 _packet.Write(_id);
                 _packet.Write(_controlHorizontal);
                 _packet.Write(_controlVertical);
-                SendUDPDataToAll(_packet);
+                SendTCPDataToAll(_packet);
             }
         }
 

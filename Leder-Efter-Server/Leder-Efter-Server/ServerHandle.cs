@@ -88,6 +88,7 @@ namespace Leder_Efter_Server
             int id = _packet.ReadInt();
             int controlHorizontal = _packet.ReadInt();
             int controlVertical = _packet.ReadInt();
+            Console.WriteLine($"{code} - {id} - {controlHorizontal} - {controlVertical}");
             ServerSend.BroadcastPlayerPosition(code, id, controlHorizontal, controlVertical);
         }
 
