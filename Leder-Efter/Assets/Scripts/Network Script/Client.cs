@@ -15,6 +15,8 @@ public class Client : MonoBehaviour
     public string myUname = "";
     public string myPass = "";
     public int myId = 0;
+    public int myScore;
+    public int myPlay;
     public bool isLogin = false;
     public bool isPlay = false;
     public bool isHost = false;
@@ -288,10 +290,12 @@ public class Client : MonoBehaviour
             { (int)ServerPackets.playerPos, ClientHandle.PlayerPosition },
             { (int)ServerPackets.playerRot, ClientHandle.PlayerRotation },
             { (int)ServerPackets.readyGaQi, ClientHandle.ReadyDong },
-            { (int)ServerPackets.scoreSent, ClientHandle.ScoreReceiver },
 
             //trivia packets
-            { (int)ServerPackets.triviaQuestion, ClientHandle.TriviaQuestionValidation }
+            { (int)ServerPackets.triviaQuestion, ClientHandle.TriviaQuestionValidation },
+            { (int)ServerPackets.triviaDatabase, ClientHandle.TriviaDatabaseValidation },
+
+            { (int)ServerPackets.scorePlaySent, ClientHandle.ScorePlayReceiver }
         };
 
         Debug.Log("Initialized packets");

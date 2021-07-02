@@ -15,6 +15,7 @@ public class TriviaQuestion
 public class UITriviaManager : MonoBehaviour
 {
     public static UITriviaManager instance;
+    public bool isPlay;
 
     [Header("Score Attribute")]
     public int score;
@@ -55,7 +56,8 @@ public class UITriviaManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-
+        if (Client.instance.isHost)
+            ClientSend.TriviaDatabaseRequest(RoomDatabase.instance.roomCode, TriviaDatabase.instance.categoryTotal, 10);
     }
 
     // Update is called once per frame
@@ -68,20 +70,15 @@ public class UITriviaManager : MonoBehaviour
 
             if (startingTime < 0)
             {
+                isPlay = true;
                 firstTimePanel.SetActive(false);
                 firstTime = false;
 
                 if (Client.instance.isHost)
                 {
-                    ClientSend.TriviaRequest();
+                    ClientSend.TriviaRequest(RoomDatabase.instance.roomCode);
                 }
             }
-        }
-
-        if (trivia.Count == 0)
-        {
-            gameOverPanel.SetActive(true);
-            scoreFinalText.text = $"Your Score's: {score}";
         }
 
         timerText.text = $"{questionCountDown}";
@@ -100,21 +97,36 @@ public class UITriviaManager : MonoBehaviour
         {
             ClientSend.DestroyRoomRequest(RoomDatabase.instance.roomCode);
             SceneManager.LoadScene(scene);
-            string uname = GameObject.Find("ClientManager").GetComponent<Client>().myUname;
-            ClientSend.UpScore(uname,score);
+            
             Debug.Log("Room Was Destroyed Successfully");
         }
 
         Client.instance.isPlay = false;
     }
 
-    public void SetQuestion(int questionResult)
+    public void SetDatabase(string codeRoom, int categoryResult, int questionResult)
     {
-        questionTemp = questionResult;
-        questionText.text = $"{trivia[questionResult].question}";
-        questionFix = trivia[questionResult].question;
-        answerFix = trivia[questionResult].answer;
-        StartCoroutine(QuestionCountDown());
+        if (RoomDatabase.instance.roomCode == codeRoom) {
+            if (categoryResult == 0)
+                trivia.Add(TriviaDatabase.instance.triviaHewan[questionResult]);
+            else if (categoryResult == 1)
+                trivia.Add(TriviaDatabase.instance.triviaTumbuhan[questionResult]);
+            else if (categoryResult == 2)
+                trivia.Add(TriviaDatabase.instance.triviaNegara[questionResult]);
+            else if (categoryResult == 3)
+                trivia.Add(TriviaDatabase.instance.triviaDunia[questionResult]);
+        }
+    }
+
+    public void SetQuestion(string codeRoom, int questionResult)
+    {
+        if (RoomDatabase.instance.roomCode == codeRoom) {
+            questionTemp = questionResult;
+            questionText.text = $"{trivia[questionResult].question}";
+            questionFix = trivia[questionResult].question;
+            answerFix = trivia[questionResult].answer;
+            StartCoroutine(QuestionCountDown());
+        }
     }
 
     IEnumerator QuestionCountDown()
@@ -137,7 +149,24 @@ public class UITriviaManager : MonoBehaviour
             }
 
             if (Client.instance.isHost)
-                ClientSend.TriviaRequest();
+                ClientSend.TriviaRequest(RoomDatabase.instance.roomCode);
+
+            if (trivia.Count == 0)
+            {
+                Client.instance.myScore += score;
+                Client.instance.myPlay++;
+
+                ClientSend.UpScorePlay(Client.instance.myUname, 
+                                       Client.instance.myScore,
+                                       Client.instance.myPlay);
+
+                Debug.Log($"Total Score: {Client.instance.myScore}");
+                Debug.Log($"Total Play: {Client.instance.myPlay}");
+
+                gameOverPanel.SetActive(true);
+                scoreFinalText.text = $"Your Score's: {score}";
+                isPlay = false;
+            }
         }
     }
 }

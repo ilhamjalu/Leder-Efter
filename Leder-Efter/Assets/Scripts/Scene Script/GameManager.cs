@@ -6,6 +6,7 @@ using UnityEngine;
 public class GameManager : MonoBehaviour
 {
     public static GameManager instance;
+    public bool sendIdle;
 
     public List<GameObject> playerCharacterTemp;
     public List<GameObject> player;
@@ -37,7 +38,8 @@ public class GameManager : MonoBehaviour
 
     void Update()
     {
-        MoveRequest();
+        if (UITriviaManager.instance.isPlay)
+            MoveRequest();
     }
 
     public void MoveRequest()
@@ -45,8 +47,20 @@ public class GameManager : MonoBehaviour
         int horizontal = Convert.ToInt32(Input.GetAxis("Horizontal"));
         int vertical = Convert.ToInt32(Input.GetAxis("Vertical"));
 
-        ClientSend.PlayerPosition(RoomDatabase.instance.roomCode,
-                                  Client.instance.myId, horizontal, vertical);
+        if (horizontal == 0 && vertical == 0 && !sendIdle) {
+            ClientSend.PlayerPosition(RoomDatabase.instance.roomCode,
+                                      Client.instance.myId, horizontal, vertical);
+            
+            sendIdle = true;
+        }
+        
+        if (horizontal != 0 || vertical != 0)
+        {
+            ClientSend.PlayerPosition(RoomDatabase.instance.roomCode,
+                                      Client.instance.myId, horizontal, vertical);
+
+            sendIdle = false;
+        }
     }
 
     public void UpdatePlayerPosition(int id, int _controlHorizontal, int _controlVertical)

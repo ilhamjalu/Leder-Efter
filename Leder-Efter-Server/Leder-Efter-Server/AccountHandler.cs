@@ -25,13 +25,17 @@ namespace Leder_Efter_Server
         [DataMember]
         public int totalScore { get; set; }
 
-        public AccountDatabase(int id, bool on, string uname, string pass, int score)
+        [DataMember]
+        public int totalPlay { get; set; }
+
+        public AccountDatabase(int id, bool on, string uname, string pass, int score, int play)
         {
             identity = id;
             active = on;
             username = uname;
             password = pass;
-            totalScore += score;
+            totalScore = score;
+            totalPlay = play;
         }
     }
 
@@ -80,9 +84,9 @@ namespace Leder_Efter_Server
                 }
             }
 
-            Server.accountDatabase.Add(new AccountDatabase(Client.identity, false, uname, pass, 0));
+            Server.accountDatabase.Add(new AccountDatabase(Client.identity, false, uname, pass, 0, 0));
             //SaveDatabase(Server.accountDatabase, "AccountDatabase.xml");
-            Console.WriteLine($"There's player join: {uname}");
+            Console.WriteLine($"There's player joined: {uname}");
 
             AddDataToDatabase();
             return "your account registered successfully";
@@ -97,11 +101,12 @@ namespace Leder_Efter_Server
                     oacc.active = false;
                     oacc.identity = 0;
                     SaveDatabase(Server.accountDatabase, "AccountDatabase.xml");
+                    Console.WriteLine($"{oacc.username} has disconnected.");
                 }
             }
         }
 
-        public static void AddScore(string uname, int score)
+        public static void AddScorePlay(string uname, int score, int play)
         {
             Server.accountDatabase = LoadDatabase<List<AccountDatabase>>("AccountDatabase.xml");
 
@@ -109,12 +114,16 @@ namespace Leder_Efter_Server
             {
                 if (uname == oacc.username)
                 {
-                    oacc.totalScore += score;
+                    oacc.totalScore = score;
+                    oacc.totalPlay = play;
+
+                    Console.WriteLine($"Database Score {uname}: {oacc.totalScore}");
+                    Console.WriteLine($"Database Play {uname}: {oacc.totalPlay}");
                 }
             }
         }
 
-        public static void ShowScore(string uname)
+        public static void ShowScorePlay(int fromClient, string uname)
         {
             Server.accountDatabase = LoadDatabase<List<AccountDatabase>>("AccountDatabase.xml");
 
@@ -122,11 +131,11 @@ namespace Leder_Efter_Server
             {
                 if (uname == oacc.username)
                 {
-                    ServerSend.SendScore(oacc.totalScore);
+                    ServerSend.SendScorePlay(fromClient, oacc.totalScore, oacc.totalPlay);
                 }
             }
         }
-
+        
         public static void AddDataToDatabase()
         {
             accountDatabaseTemp = LoadDatabase<List<AccountDatabase>>("AccountDatabase.xml");

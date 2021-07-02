@@ -238,21 +238,34 @@ namespace Leder_Efter_Server
             }
         }
 
-        public static void TriviaQuestionBroadcast(int questionResult)
+        public static void TriviaQuestionBroadcast(string codeRoom, int questionResult)
         {
             using (Packet _packet = new Packet((int)ServerPackets.triviaQuestion))
             {
+                _packet.Write(codeRoom);
                 _packet.Write(questionResult);
                 SendTCPDataToAll(_packet);
             }
         }
 
-        public static void SendScore(int score)
+        public static void TriviaDatabaseBroadcast(string codeRoom, int categoryResult, int questionResult)
         {
-            using (Packet _packet = new Packet((int)ServerPackets.scoreSent))
+            using (Packet _packet = new Packet((int)ServerPackets.triviaDatabase))
+            {
+                _packet.Write(codeRoom);
+                _packet.Write(categoryResult);
+                _packet.Write(questionResult);
+                SendTCPDataToAll(_packet);
+            }
+        }
+
+        public static void SendScorePlay(int _toClient, int score, int play)
+        {
+            using (Packet _packet = new Packet((int)ServerPackets.scorePlaySent))
             {
                 _packet.Write(score);
-                SendTCPDataToAll(_packet);
+                _packet.Write(play);
+                SendTCPData(_toClient, _packet);
             }
         }
 

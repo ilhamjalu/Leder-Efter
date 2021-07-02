@@ -28,7 +28,8 @@ public enum ServerPackets
     winlose,
 
     triviaQuestion,
-    scoreSent
+    triviaDatabase,
+    scorePlaySent
 }
 
 /// <summary>Sent from client to server.</summary>
@@ -52,8 +53,9 @@ public enum ClientPackets
     readyGan,
 
     triviaQuestionRequest,
-    storeScore,
-    scoreRequest
+    triviaDatabaseRequest,
+    storeScorePlay,
+    scorePlayRequest
 }
 
 public class Packet : IDisposable

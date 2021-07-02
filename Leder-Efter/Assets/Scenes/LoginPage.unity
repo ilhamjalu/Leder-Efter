@@ -4387,11 +4387,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 30be239820f94664b9f23f386a0da412, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ip: 127.0.0.1
+  ip: 35.186.155.158
   port: 26950
   myUname: 
   myPass: 
   myId: 0
+  myScore: 0
+  myPlay: 0
   isLogin: 0
   isPlay: 0
   isHost: 0
@@ -4434,6 +4436,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   roomCode: 
+  isPlay: 0
   playerDatabase: []
 --- !u!1 &1831161835
 GameObject:
@@ -4555,6 +4558,7 @@ MonoBehaviour:
   ipField: {fileID: 834002414}
   notif: {fileID: 564878729}
   toScene: MainMenu
+  ipAddressExternal: 
   usernameSignIn: {fileID: 1014407476}
   passwordSignIn: {fileID: 2122162884}
   usernameSignUp: {fileID: 2028930839}

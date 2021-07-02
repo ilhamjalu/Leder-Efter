@@ -161,12 +161,24 @@ public class ClientSend : MonoBehaviour
         }
     }
 
-    public static void TriviaRequest()
+    public static void TriviaRequest(string codeRoom)
     {
         using (Packet _packet = new Packet((int)ClientPackets.triviaQuestionRequest))
         {
+            _packet.Write(codeRoom);
             _packet.Write(true);
             _packet.Write(UITriviaManager.instance.trivia.Count);
+            SendTCPData(_packet);
+        }
+    }
+
+    public static void TriviaDatabaseRequest(string codeRoom, int categoryRequest, int questionRequest)
+    {
+        using (Packet _packet = new Packet((int)ClientPackets.triviaDatabaseRequest))
+        {
+            _packet.Write(codeRoom);
+            _packet.Write(categoryRequest);
+            _packet.Write(questionRequest);
             SendTCPData(_packet);
         }
     }
@@ -185,19 +197,20 @@ public class ClientSend : MonoBehaviour
         }
     }
 
-    public static void UpScore(string uname, int score)
+    public static void UpScorePlay(string uname, int score, int play)
     {
-        using (Packet _packet = new Packet((int)ClientPackets.storeScore))
+        using (Packet _packet = new Packet((int)ClientPackets.storeScorePlay))
         {
             _packet.Write(uname);
             _packet.Write(score);
+            _packet.Write(play);
             SendTCPData(_packet);
         }
     }
 
-    public static void ScoreRequest(string uname)
+    public static void ScorePlayRequest(string uname)
     {
-        using (Packet _packet = new Packet((int)ClientPackets.scoreRequest))
+        using (Packet _packet = new Packet((int)ClientPackets.scorePlayRequest))
         {
             _packet.Write(uname);
             SendTCPData(_packet);

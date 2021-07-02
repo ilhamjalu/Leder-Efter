@@ -29,7 +29,8 @@ namespace Leder_Efter_Server
         winlose,
 
         triviaQuestion,
-        scoreSent
+        triviaDatabase,
+        scorePlaySent
     }
 
     /// <summary>Sent from client to server.</summary>
@@ -53,8 +54,9 @@ namespace Leder_Efter_Server
         readyGan,
 
         triviaQuestionRequest,
-        storeScore,
-        scoreRequest
+        triviaDatabaseRequest,
+        storeScorePlay,
+        scorePlayRequest
     }
 
     public class Packet : IDisposable

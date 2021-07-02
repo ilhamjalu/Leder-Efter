@@ -4,6 +4,7 @@ using System.Net;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using System;
 
 public class ClientHandle : MonoBehaviour
 {
@@ -200,13 +201,24 @@ public class ClientHandle : MonoBehaviour
 
     public static void TriviaQuestionValidation(Packet _packet)
     {
+        string codeRoom = _packet.ReadString();
         int questionResult = _packet.ReadInt();
-        UITriviaManager.instance.SetQuestion(questionResult);
+        UITriviaManager.instance.SetQuestion(codeRoom, questionResult);
     }
 
-    public static void ScoreReceiver(Packet _packet)
+    public static void TriviaDatabaseValidation(Packet _packet)
+    {
+        string codeRoom = _packet.ReadString();
+        int categoryResult = _packet.ReadInt();
+        int questionResult = _packet.ReadInt();
+        UITriviaManager.instance.SetDatabase(codeRoom, categoryResult, questionResult);
+    }
+
+    public static void ScorePlayReceiver(Packet _packet)
     {
         int score = _packet.ReadInt();
-        UIMenuManager.instance.playerScore = score;
+        int play = _packet.ReadInt();
+        Client.instance.myScore = score;
+        Client.instance.myPlay = play;
     }
 }

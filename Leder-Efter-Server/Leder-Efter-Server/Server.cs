@@ -36,7 +36,8 @@ namespace Leder_Efter_Server
             udpListener = new UdpClient(Port);
             udpListener.BeginReceive(UDPReceiveCallback, null);
 
-            Console.WriteLine($"Server started on {Port}");
+            Console.WriteLine($"Server started on {Port}\n");
+            Console.WriteLine("[CLIENT ACTIVITY]");
         }
 
         private static void TCPConnectCallback(IAsyncResult _result)
@@ -140,8 +141,10 @@ namespace Leder_Efter_Server
                 { (int)ClientPackets.readyGan, ServerHandle.PlayerReady },
 
                 { (int)ClientPackets.triviaQuestionRequest, ServerHandle.TriviaQuestionReceived },
-                { (int)ClientPackets.storeScore, ServerHandle.ScoreReceived },
-                { (int)ClientPackets.scoreRequest, ServerHandle.ScoreSent }
+                { (int)ClientPackets.triviaDatabaseRequest, ServerHandle.TriviaDatabaseReceived },
+
+                { (int)ClientPackets.storeScorePlay, ServerHandle.ScorePlayReceived },
+                { (int)ClientPackets.scorePlayRequest, ServerHandle.ScorePlayerSent }
             };
 
             Console.WriteLine("Initialized packets");

@@ -88,7 +88,8 @@ namespace Leder_Efter_Server
             int id = _packet.ReadInt();
             int controlHorizontal = _packet.ReadInt();
             int controlVertical = _packet.ReadInt();
-            Console.WriteLine($"{code} - {id} - {controlHorizontal} - {controlVertical}");
+            
+            //Console.WriteLine($"{code} - {id} - {controlHorizontal} - {controlVertical}");
             ServerSend.BroadcastPlayerPosition(code, id, controlHorizontal, controlVertical);
         }
 
@@ -149,25 +150,36 @@ namespace Leder_Efter_Server
 
         public static void TriviaQuestionReceived(int _fromClient, Packet _packet)
         {
+            string codeRoom = _packet.ReadString();
             bool ready = _packet.ReadBool();
             int maxQuestion = _packet.ReadInt();
 
-            TriviaHandler.SetQuestion(ready, maxQuestion);
+            TriviaHandler.SetQuestion(codeRoom, ready, maxQuestion);
         }
 
-        public static void ScoreReceived(int _fromClient, Packet _packet)
+        public static void TriviaDatabaseReceived(int _fromClient, Packet _packet)
+        {
+            string codeRoom = _packet.ReadString();
+            int maxCategory = _packet.ReadInt();
+            int maxQuestion = _packet.ReadInt();
+
+            TriviaHandler.SetDatabase(codeRoom, maxCategory, maxQuestion);
+        }
+
+        public static void ScorePlayReceived(int _fromClient, Packet _packet)
         {
             string uname = _packet.ReadString();
             int score = _packet.ReadInt();
+            int play = _packet.ReadInt();
 
-            AccountHandler.AddScore(uname, score);
+            AccountHandler.AddScorePlay(uname, score, play);
         }
 
-        public static void ScoreSent(int _fromClient, Packet _packet)
+        public static void ScorePlayerSent(int _fromClient, Packet _packet)
         {
             string uname = _packet.ReadString();
 
-            AccountHandler.ShowScore(uname);
+            AccountHandler.ShowScorePlay(_fromClient, uname);
         }
 
         public static void PlayerMovement(int _fromClient, Packet _packet)

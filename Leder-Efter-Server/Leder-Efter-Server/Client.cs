@@ -223,7 +223,6 @@ namespace Leder_Efter_Server
 
         private void Disconnect()
         {
-            Console.WriteLine($"{tcp.socket.Client.RemoteEndPoint} has disconnected.");
             AccountHandler.SignOut(id);
 
             player = null;

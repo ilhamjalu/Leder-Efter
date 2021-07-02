@@ -11,8 +11,10 @@ public class UIMenuManager : MonoBehaviour
 
     [Header("MainMenu Attribute")]
     public int playerScore;
+    public int playerPlay;
     public TextMeshProUGUI helloText;
-    public TextMeshProUGUI scoreText;
+    public Text totalScoreText;
+    public Text totalPlayText;
     public GameObject onlineChoice;
     public GameObject quitChoice;
     public bool touched = false;
@@ -36,7 +38,7 @@ public class UIMenuManager : MonoBehaviour
     private void Start()
     {
         helloText.text = $"hello, {Client.instance.myUname} #{Client.instance.myId}";
-        ClientSend.ScoreRequest(Client.instance.myUname);
+        //ClientSend.ScoreRequest(Client.instance.myUname);
     }
 
     private void Update()
@@ -44,7 +46,8 @@ public class UIMenuManager : MonoBehaviour
         if (Client.instance.isPlay)
             SceneManager.LoadScene(goToScene);
 
-        scoreText.text = "Score : " + playerScore;
+        totalScoreText.text = $"{Client.instance.myScore}";
+        totalPlayText.text = $"{Client.instance.myPlay}";
     }
 
     public void GameTest()
@@ -101,7 +104,7 @@ public class UIMenuManager : MonoBehaviour
         else if (index == 2)
         {
             Client.instance.Disconnect();
-            SceneManager.LoadScene("LoginPage");
+            Application.Quit();
         }
     }
 }

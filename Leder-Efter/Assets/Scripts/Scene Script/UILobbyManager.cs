@@ -53,7 +53,7 @@ public class UILobbyManager : MonoBehaviour
 
         if (Client.instance.isHost)
         {
-            colorButton.SetActive(true);
+            //colorButton.SetActive(true);
             triviaButton.SetActive(true);
         }
     }

@@ -14,6 +14,7 @@ public class UILoginManager : MonoBehaviour
     public TMP_InputField ipField;
     public TextMeshProUGUI notif;
     public string toScene;
+    public string ipAddressExternal;
 
     [Header("SignIn Attribute")]
     public TMP_InputField usernameSignIn;
@@ -38,6 +39,7 @@ public class UILoginManager : MonoBehaviour
     private void Start()
     {
         loginPage.SetActive(false);
+        ConnectToServer();
     }
 
     private void Update()
@@ -55,7 +57,6 @@ public class UILoginManager : MonoBehaviour
         if (ipField.text == "")
             ipField.text = "127.0.0.1";
 
-        Client.instance.ip = ipField.text;
         Client.instance.ConnectToServer();
 
         startMenu.SetActive(false);
@@ -71,6 +72,7 @@ public class UILoginManager : MonoBehaviour
             Client.instance.myUname = usernameSignIn.text;
             Client.instance.myPass = passwordSignIn.text;
             ClientSend.SignInRequest(usernameSignIn.text, passwordSignIn.text);
+            ClientSend.ScorePlayRequest(Client.instance.myUname);
             ValueReset();
         }
     }
