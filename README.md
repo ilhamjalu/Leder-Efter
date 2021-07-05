@@ -127,3 +127,51 @@ packetHandlers = new Dictionary<int, PacketHandler>()
                 { (int)ClientPackets.playRequest, ServerHandle.PlaySent }
             };
 ```
+
+so from the code above server must run SignInReceived Class to check that the user input is true or false, in this class another class is call to do a validation from user input
+```C#
+public static void SignInReceived(int _fromClient, Packet _packet)
+        {
+            ClientData.Account _account = _packet.ReadObject<ClientData.Account>();
+
+            string validation = AccountHandler.SignIn(_account.username, _account.password);
+            if (validation == "login was successful")
+                Server.readyDatabase.Add(new ReadyDatabase(_fromClient, false));
+
+            ServerSend.SignInValidation(_fromClient, validation);
+        }
+```
+
+AccountHandler is a class to do all of something that have relation with user Account, and from the code above, Account Handler will do a validation from user input
+```c#
+public static string SignIn(string uname, string pass)
+        {
+            Server.accountDatabase = LoadDatabase<List<AccountDatabase>>("AccountDatabase.xml");
+
+            foreach (AccountDatabase oacc in Server.accountDatabase)
+            {
+                if (uname == oacc.username && !oacc.active)
+                {
+                    if (pass == oacc.password)
+                    {
+                        oacc.active = true;
+                        Console.WriteLine($"There's player signIn: {uname}");
+
+                        oacc.identity = Client.identity;
+                        SaveDatabase(Server.accountDatabase, "AccountDatabase.xml");
+                        return "login was successful";
+                    }
+                    else
+                    {
+                        return "login failed! your password is wrong";
+                    }
+                }
+                else if (uname == oacc.username && oacc.active)
+                {
+                    return "login failed! another user is using your account";
+                }
+            }
+
+            return "login failed! your account's not found";
+        }
+```
