@@ -65,7 +65,7 @@ public enum ClientPackets
     scorePlayRequest
 }
 ```
-#### Login Page
+#### Sign In
 on this login page client must sign in before can play the game, but when user doesnt have the account, they can use sign up feature
 Login Image
 if user already have an account to sign in, on clients side function SignInRequest will be running, this function use to send data such as username and password to server, this packets have an identifier that called signInRequest
@@ -173,5 +173,174 @@ public static string SignIn(string uname, string pass)
             }
 
             return "login failed! your account's not found";
+        }
+```
+
+to check account, server will call a function SaveDatabase that will do a serialize class to check that the data is already on the database, the database we using a xml file
+```C#
+public static void SaveDatabase<T>(T _serialazable, string _fileName)
+        {
+            var serializer = new DataContractSerializer(typeof(T));
+            var settings = new XmlWriterSettings()
+            {
+                Indent = true,
+                IndentChars = "\t",
+            };
+            var writer = XmlWriter.Create(_fileName, settings);
+
+            serializer.WriteObject(writer, _serialazable);
+            writer.Close();
+        }
+```
+```XML
+<?xml version="1.0" encoding="UTF-8"?>
+
+-<ArrayOfAccountDatabase xmlns="http://schemas.datacontract.org/2004/07/Leder_Efter_Server" xmlns:i="http://www.w3.org/2001/XMLSchema-instance">
+
+
+-<AccountDatabase>
+
+<active>false</active>
+
+<identity>0</identity>
+
+<password>111</password>
+
+<totalPlay>0</totalPlay>
+
+<totalScore>7</totalScore>
+
+<username>111</username>
+
+</AccountDatabase>
+
+
+-<AccountDatabase>
+
+<active>false</active>
+
+<identity>0</identity>
+
+<password>123</password>
+
+<totalPlay>3</totalPlay>
+
+<totalScore>16</totalScore>
+
+<username>123</username>
+
+</AccountDatabase>
+
+
+-<AccountDatabase>
+
+<active>false</active>
+
+<identity>0</identity>
+
+<password>admin</password>
+
+<totalPlay>0</totalPlay>
+
+<totalScore>0</totalScore>
+
+<username>admin</username>
+
+</AccountDatabase>
+
+
+-<AccountDatabase>
+
+<active>false</active>
+
+<identity>0</identity>
+
+<password>123</password>
+
+<totalPlay>0</totalPlay>
+
+<totalScore>0</totalScore>
+
+<username>ilham</username>
+
+</AccountDatabase>
+
+</ArrayOfAccountDatabase>
+```
+
+#### SIgn Up
+next to sign in form there is sign up form, when user doesnt have an account to sign in so they can make a new account to sign in, below is code from the sign up function on the clients
+```C#
+public static void SignUpRequest(string uname, string pass)
+    {
+        using (Packet _packet = new Packet((int)ClientPackets.signUpRequest))
+        {
+            ClientData.Account _account = new ClientData.Account(uname, pass);
+
+            _packet.Write<ClientData.Account>(_account);
+            SendTCPData(_packet);
+        }
+    }
+```
+then client will send packet to server, this packet have identifier called signUpRequest that make server must run SignUpReceived function, in this function user's input will be checked 
+```C#
+public static void SignUpReceived(int _fromClient, Packet _packet)
+        {
+            ClientData.Account _account = _packet.ReadObject<ClientData.Account>();
+            string validation = AccountHandler.SignUp(_account.username, _account.password);
+            ServerSend.SignUpValidation(_fromClient, validation);
+        }
+```
+on SignUpReceiver will run a function SignUp, this function check the user input, this function have a verification to check that username that user have been input already on the database or not, then this function will call AddDataToDatabase
+```C#
+public static string SignUp(string uname, string pass)
+        {
+            foreach (AccountDatabase oacc in Server.accountDatabase)
+            {
+                if (uname == oacc.username)
+                {
+                    return "login failed! change your username";
+                }
+            }
+
+            Server.accountDatabase.Add(new AccountDatabase(Client.identity, false, uname, pass, "0", "0"));
+            Console.WriteLine($"There's player join: {uname}");
+
+            AddDataToDatabase();
+            return "your account registered successfully";
+        }
+```
+this function will check on the xml file, this function will call a function that xml code already write above. then call the SaveDatabase 
+```C#
+public static void AddDataToDatabase()
+        {
+            accountDatabaseTemp = LoadDatabase<List<AccountDatabase>>("AccountDatabase.xml");
+            accountDatabaseTemp.AddRange(Server.accountDatabase);
+            SaveDatabase(Server.accountDatabase, "AccountDatabase.xml");
+        }
+```
+this code is using to open the xml data then write the input from user to the database
+```C#
+        public static T LoadDatabase<T>(string _fileName)
+        {
+            var fileStream = new FileStream(_fileName, FileMode.Open);
+            var reader = XmlDictionaryReader.CreateTextReader(fileStream, new XmlDictionaryReaderQuotas());
+            var serializer = new DataContractSerializer(typeof(T));
+            T serializable = (T)serializer.ReadObject(reader, true);
+
+            reader.Close();
+            fileStream.Close();
+            return serializable;
+        }
+```
+then after that the server will send packet to the client to notify that the new user has been added to the database so user can sign in with the new account
+```C#
+ public static void SignUpValidation(int _toClient, string _msg)
+        {
+            using (Packet _packet = new Packet((int)ServerPackets.signUp))
+            {
+                _packet.Write(_msg);
+                SendTCPData(_toClient, _packet);
+            }
         }
 ```
