@@ -268,7 +268,8 @@ public static void SaveDatabase<T>(T _serialazable, string _fileName)
 </ArrayOfAccountDatabase>
 ```
 
-#### SIgn Up
+### Login Page
+#### Sign Up
 next to sign in form there is sign up form, when user doesnt have an account to sign in so they can make a new account to sign in, below is code from the sign up function on the clients
 ```C#
 public static void SignUpRequest(string uname, string pass)
@@ -343,4 +344,198 @@ then after that the server will send packet to the client to notify that the new
                 SendTCPData(_toClient, _packet);
             }
         }
+```
+
+### Main Menu
+#### Host
+main menu have a lot of feature, let me tell you one by one, first is button to play called online, when online button clicked another button will shown, this code is use to shown the button to make a room or join a room
+```C#
+    public void ChooseOnline(int code)
+    {
+        if (!touched && code == 1)
+        {
+            onlineChoice.SetActive(true);
+            touched = true;
+        }
+        else if (touched)
+        {
+            onlineChoice.SetActive(false);
+            touched = false;
+        }
+    }
+```
+
+below is code that run when user click host button, it will create a room to play, and this code will call a function HostRoomRequest
+```C#
+    public void ChooseHost()
+    {
+        if (codeRoom.text != "")
+        {
+            ClientSend.HostRoomRequest(codeRoom.text);
+            RoomDatabase.instance.roomCode = codeRoom.text;
+        }
+        else
+        {
+            notifText.text = "please input the room code!";
+        }
+    }
+```
+
+on the HostRoomRequest will be send a packet that contain room code to the server
+```C#
+    public static void HostRoomRequest(string code)
+    {
+        using (Packet _packet = new Packet((int)ClientPackets.hostRoomRequest))
+        {
+            _packet.Write(code);
+            SendTCPData(_packet);
+        }
+    }
+```
+
+since server receive a hostroomrequest packet data so server must run HostRoomReceived function, then this function will call a validation class
+```C#
+        public static void HostRoomReceived(int _fromClient, Packet _packet)
+        {
+            string code = _packet.ReadString();
+            string notif = RoomHandler.HostRoomValidation(code);
+            ServerSend.HostRoomValidation(_fromClient, notif);
+        }
+```
+
+then HostRoomValidation will do a validation of a room code that clients send, than on this class will send the code to HostRoom function
+```C#
+        public static string HostRoomValidation(string code)
+        {
+            foreach (RoomDatabase oroom in roomDatabase)
+            {
+                if (code == oroom.code)
+                {
+                    return "create failed! change your room code or join with that code";
+                }
+            }
+
+            HostRoom(code);
+            return "room created succesfully";
+        }
+```
+on the HostRoom, the code wiil be added to the a list of room that a list of room have a variable code that is room code, and isPlay that will be a condition of the room
+```C#
+        public static void HostRoom(string code)
+        {
+            roomDatabase.Add(new RoomDatabase(code));
+            Console.WriteLine($"Room Created Succesfully w/ Code: {code}");
+        }
+```
+```C#
+    class RoomDatabase
+    {
+        public string code { get; set; }
+        public bool isPlay { get; set; }
+
+        public List<PlayerJoinedDatabase> playerJoinedDatabase = new List<PlayerJoinedDatabase>();
+
+        public RoomDatabase(string _code)
+        {
+            code = _code;
+        }
+    }
+```
+then server will send again the room code to the clients, below is the code
+```C#
+        public static void HostRoomValidation(int _toClient, string _msg)
+        {
+            using (Packet _packet = new Packet((int)ServerPackets.hostRoom))
+            {
+                _packet.Write(_msg);
+                SendTCPData(_toClient, _packet);
+            }
+        }
+```
+
+#### Join
+then when there is already room in there, player can join to the room that available, player can click join, then this class will call JoinRoomRequest to send a packet data that contain username, id and code to the server
+```C#
+    public void ChooseJoin()
+    {
+        if (codeRoom.text != "")
+        {
+            ClientSend.JoinRoomRequest(codeRoom.text, Client.instance.myId, Client.instance.myUname);
+            RoomDatabase.instance.roomCode = codeRoom.text;
+        }
+        else
+        {
+            notifText.text = "please input the room code!";
+        }
+    }
+```
+```C#
+    public static void JoinRoomRequest(string code, int id, string uname)
+    {
+        using (Packet _packet = new Packet((int)ClientPackets.joinRoomRequest))
+        {
+            _packet.Write(code);
+            _packet.Write(id);
+            _packet.Write(uname);
+            SendTCPData(_packet);
+        }
+    }
+```
+
+then the server will run a function JoinRoomReceived, in this function will be call another function called JoinRoomValidation to do a validation, is there any room with that code or not, if there a room with that code the client can join into a room, but if there is no room with that code player cant join into a room, because there is no room with that code 
+```C#
+        public static void JoinRoomReceived(int _fromClient, Packet _packet)
+        {
+            string code = _packet.ReadString();
+            int id = _packet.ReadInt();
+            string uname = _packet.ReadString();
+            string notif = RoomHandler.JoinRoomValidation(code, id, uname);
+            ServerSend.JoinRoomValidation(_fromClient, notif);
+        }
+```
+```C#
+        public static string JoinRoomValidation(string code, int id, string uname)
+        {
+            foreach (RoomDatabase oroom in roomDatabase)
+            {
+                if (code == oroom.code)
+                {
+                    JoinRoom(code, id, uname);
+                    return "joined succesfully";
+                }
+            }
+
+            return "join failed! change your room code or host a new room";
+        }
+```
+
+```C#
+        public static void JoinRoom(string _code, int id,string _uname)
+        {
+            for (int i = 0; i < roomDatabase.Count; i++)
+            {
+                if (_code == roomDatabase[i].code)
+                {
+                    bool playerJoined = false;
+                    foreach (PlayerJoinedDatabase oplayer in roomDatabase[roomDatabase.Count - 1].playerJoinedDatabase)
+                    {
+                        if (_uname == oplayer.username)
+                            playerJoined = true;
+                    }
+
+                    if (!playerJoined)
+                    {
+                        roomDatabase[i].playerJoinedDatabase.Add(new PlayerJoinedDatabase(id, _uname, 0));
+
+                        for (int j = 0; j < roomDatabase[i].playerJoinedDatabase.Count; j++)
+                        {
+                            ServerSend.BroadcastPlayerJoined(_code, roomDatabase[i].playerJoinedDatabase[j].id, roomDatabase[i].playerJoinedDatabase[j].username);
+                        }
+                    }
+                }
+            }
+
+            //PrintDetailRoom();
+        }
+
 ```
