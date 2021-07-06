@@ -508,7 +508,7 @@ then the server will run a function JoinRoomReceived, in this function will be c
             return "join failed! change your room code or host a new room";
         }
 ```
-
+since the client send a code, id and username server will call a function called JoinRoom, in this function the clients will be checked, if the player has join the room palyer will be broadcasted to all the clients
 ```C#
         public static void JoinRoom(string _code, int id,string _uname)
         {
@@ -534,8 +534,18 @@ then the server will run a function JoinRoomReceived, in this function will be c
                     }
                 }
             }
-
-            //PrintDetailRoom();
         }
 
+```
+```C#
+        public static void BroadcastPlayerJoined(string _codeRoom, int _id, string _uname)
+        {
+            using (Packet _packet = new Packet((int)ServerPackets.playerJoined))
+            {
+                _packet.Write(_codeRoom);
+                _packet.Write(_id);
+                _packet.Write(_uname);
+                SendTCPDataToAll(_packet);
+            }
+        }
 ```
