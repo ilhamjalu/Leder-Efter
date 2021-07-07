@@ -508,7 +508,7 @@ then the server will run a function JoinRoomReceived, in this function will be c
             return "join failed! change your room code or host a new room";
         }
 ```
-since the client send a code, id and username server will call a function called JoinRoom, in this function the clients will be checked, if the player has join the room palyer will be broadcasted to all the clients
+since the client send a code, id and username server will call a function called JoinRoom, in this function the clients will be checked, if the player has join the room player will be broadcasted to all the clients
 ```C#
         public static void JoinRoom(string _code, int id,string _uname)
         {
@@ -548,4 +548,162 @@ since the client send a code, id and username server will call a function called
                 SendTCPDataToAll(_packet);
             }
         }
+```
+
+then on the clients side, player who join the room will be added to a list, after that  player who has been join the room will be shown on every clients 
+```C#
+    public static void AddPlayerToDatabase(Packet _packet)
+    {
+        string _codeRoom = _packet.ReadString();
+        int _id = _packet.ReadInt();
+        string _uname = _packet.ReadString();
+
+        if (_codeRoom == RoomDatabase.instance.roomCode)
+        {
+            RoomDatabase.instance.AddPlayerToDatabase(_id, _uname);
+        }
+    }
+``` 
+```C#
+    public void AddPlayerToDatabase(int id, string uname)
+    {
+        bool found = false;
+        for (int i = 0; i < playerDatabase.Count; i++)
+        {
+            if (id == playerDatabase[i].id)
+                found = true;
+        }
+
+        if (!found)
+            playerDatabase.Add(new PlayerDatabase(id, uname, 0));
+    }
+```
+beside play button there is a leave button that will take you out of room and go back to the main menu, in this function client will send packets data that tells the server that user has been leave from the room
+```C#
+    public void LeaveDestroyRoom()
+    {
+        if (!Client.instance.isHost)
+        {
+            ClientSend.LeaveRoomRequest(RoomDatabase.instance.roomCode, Client.instance.myUname);
+            RoomDatabase.instance.RemoveDatabase();
+        }
+        else
+        {
+            ClientSend.DestroyRoomRequest(RoomDatabase.instance.roomCode);
+            GoToScene("MainMenu");
+        }
+
+        Client.instance.isPlay = false;
+    }
+```
+
+and from the play button, client will send a packet to the server to tells the server that the game going to play
+```C#
+    public void StartMatch(string gameType)
+    {
+        ClientSend.StartMatch(RoomDatabase.instance.roomCode, gameType);
+    }
+```
+```C#
+    public static void StartMatch(string code, string gameType)
+    {
+        using (Packet _packet = new Packet((int)ClientPackets.startMatchRequest))
+        {
+            _packet.Write(code);
+            _packet.Write(gameType);
+            SendTCPData(_packet);
+        }
+    }
+```
+when client who is the host of the room send packet data that tell server that game hsa been play, server take that packet and broadcast it to all of the clients 
+```C#
+        public static void StartMatchReceived(int _fromClient, Packet _packet)
+        {
+            string code = _packet.ReadString();
+            string gameType = _packet.ReadString();
+            RoomHandler.StartMatch(code, true, gameType);
+            ServerSend.BroadcastStartMatch(code, gameType);
+        }
+```
+```C#
+        public static void BroadcastStartMatch(string _codeRoom, string _gameType)
+        {
+            using (Packet _packet = new Packet((int)ServerPackets.startMatch))
+            {
+                _packet.Write(_codeRoom);
+                _packet.Write(_gameType);
+                SendTCPDataToAll(_packet);
+            }
+        }
+```
+
+### GamePlay
+after the host play the game, all of clients will be sent to the gameplay scene, first on the gameplay will be generated player as much as clients whose join the room, player script has a function to do a movement script
+```C#
+public class PlayerCharManager : MonoBehaviour
+{
+	public int horizontal = 0;
+	public int vertical = 0;
+	public float maxSpeed = 5f;
+
+	public Animator anim;
+	public Rigidbody2D rb;
+
+	public bool faceRight = true;
+	public bool isDead = false;
+	
+	void Start()
+	{
+		rb = GetComponent<Rigidbody2D>();
+		anim = gameObject.GetComponent<Animator>();
+		anim.SetBool("walk", false);
+		anim.SetBool("dead", false);
+		anim.SetBool("jump", false);
+	}
+
+    void FixedUpdate()
+    {
+		Move(horizontal, vertical);
+	}
+
+	void Move(int horizontal, int vertical)
+    {
+		if (horizontal > 0)
+		{
+			anim.SetBool("walk", true);
+			if (faceRight == false)
+			{
+				Flip();
+			}
+		}
+
+		if ((horizontal < 0))
+		{
+			anim.SetBool("walk", true);
+			if (faceRight == true)
+			{
+				Flip();
+			}
+		}
+
+		if (vertical > 0)
+			anim.SetBool("walk", true);
+
+		if (vertical < 0)
+			anim.SetBool("walk", true);
+
+		if (horizontal == 0 && vertical == 0)
+			anim.SetBool("walk", false);
+
+		rb.velocity = new Vector3(horizontal * maxSpeed, vertical * maxSpeed, 0);
+
+	}
+
+	void Flip()
+	{
+		faceRight = !faceRight;
+		Vector3 theScale = transform.localScale;
+		theScale.x *= -1;
+		transform.localScale = theScale;
+	}
 ```
