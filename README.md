@@ -1,10 +1,8 @@
-### Leder-Efter
-(Author) 4210181002 Farhan Muhammad
-(Author) 4210181010 Ilham Jalu Prakosa
-(Course) Praktikum Desain Multiplayer Game Online
+## Leder-Efter
+##### Develop by Farhan Muhammad and Ilham Jalu Prakosa
 
 ### Game-Overview
-This game can be played by up to 30 players. Every five players will enter into a team with the same color, each team will look for items that are distributed to several random positions. Win / lose conditions will be determined from the total items found by each team.
+This game can be played by up to 30 players. this game have a simple gameplay, player just need to choose the correct answer from the question given, each the correct answer will be convert into a score
 
 ### Game-Detail
 Multiplayer Game Online
@@ -18,10 +16,9 @@ High Concept Document can be accessed in here
 ### Game-Design-Document
 Game Concept Document can be accessed in here
 
-### GIF-Progress
-4210181002_4210181010_FPS Gameplay
-
 ### Game Documentation
+#### Flow Chart
+<img src="https://github.com/ilhamjalu/Leder-Efter/blob/main/Screenshot/FlowChart.png"><br>
 
 #### Packets
 packets is a collection of some data that going to send from server to clients or send from clients to server. these packet have an identifier to make server or clients know what should they do when they got that packet, below is the packets identifier that located on server and clients, server and client must have 2 of these packets
@@ -65,6 +62,7 @@ public enum ClientPackets
     scorePlayRequest
 }
 ```
+
 #### Sign In
 on this login page client must sign in before can play the game, but when user doesnt have the account, they can use sign up feature
 Login Image
