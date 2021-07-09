@@ -62,7 +62,8 @@ public enum ClientPackets
     scorePlayRequest
 }
 ```
-
+### Login Page
+<img src="https://github.com/ilhamjalu/Leder-Efter/blob/main/Screenshot/Login%20Page.png" width="550" height="300"><br>
 #### Sign In
 on this login page client must sign in before can play the game, but when user doesnt have the account, they can use sign up feature
 Login Image
@@ -265,8 +266,6 @@ public static void SaveDatabase<T>(T _serialazable, string _fileName)
 
 </ArrayOfAccountDatabase>
 ```
-
-### Login Page
 #### Sign Up
 next to sign in form there is sign up form, when user doesnt have an account to sign in so they can make a new account to sign in, below is code from the sign up function on the clients
 ```C#
@@ -345,6 +344,8 @@ then after that the server will send packet to the client to notify that the new
 ```
 
 ### Main Menu
+<img src="https://github.com/ilhamjalu/Leder-Efter/blob/main/Screenshot/Main%20Menu.png" width="550" height="300"><br>
+<img src="https://github.com/ilhamjalu/Leder-Efter/blob/main/Screenshot/Online.png"><br>
 #### Host
 main menu have a lot of feature, let me tell you one by one, first is button to play called online, when online button clicked another button will shown, this code is use to shown the button to make a room or join a room
 ```C#
@@ -450,7 +451,8 @@ then server will send again the room code to the clients, below is the code
             }
         }
 ```
-
+### Lobby
+<img src="https://github.com/ilhamjalu/Leder-Efter/blob/main/Screenshot/Lobby.png" width="550" height="300"><br>
 #### Join
 then when there is already room in there, player can join to the room that available, player can click join, then this class will call JoinRoomRequest to send a packet data that contain username, id and code to the server
 ```C#
@@ -636,6 +638,7 @@ when client who is the host of the room send packet data that tell server that g
 ```
 
 ### GamePlay
+<img src="https://github.com/ilhamjalu/Leder-Efter/blob/main/Screenshot/InGame.png" width="550" height="300"><br>
 after the host play the game, all of clients will be sent to the gameplay scene, first on the gameplay will be generated player as much as clients whose join the room, player script has a function to do a movement script
 ```C#
 public class PlayerCharManager : MonoBehaviour
