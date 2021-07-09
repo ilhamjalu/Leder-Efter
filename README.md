@@ -707,3 +707,205 @@ public class PlayerCharManager : MonoBehaviour
 		transform.localScale = theScale;
 	}
 ```
+a Game Manager Script will send player movement to the server
+```C#
+    public void MoveRequest()
+    {
+        int horizontal = Convert.ToInt32(Input.GetAxis("Horizontal"));
+        int vertical = Convert.ToInt32(Input.GetAxis("Vertical"));
+
+        if (horizontal == 0 && vertical == 0 && !sendIdle) {
+            ClientSend.PlayerPosition(RoomDatabase.instance.roomCode,
+                                      Client.instance.myId, horizontal, vertical);
+            
+            sendIdle = true;
+        }
+        
+        if (horizontal != 0 || vertical != 0)
+        {
+            ClientSend.PlayerPosition(RoomDatabase.instance.roomCode,
+                                      Client.instance.myId, horizontal, vertical);
+
+            sendIdle = false;
+        }
+    }
+
+    public void UpdatePlayerPosition(int id, int _controlHorizontal, int _controlVertical)
+    {
+        for (int i = 0; i < RoomDatabase.instance.playerDatabase.Count; i++)
+        {
+            if (RoomDatabase.instance.playerDatabase[i].id == id)
+            {
+                RoomDatabase.instance.playerDatabase[i].character.horizontal = _controlHorizontal;
+                RoomDatabase.instance.playerDatabase[i].character.vertical = _controlVertical;
+            }
+        }
+    }
+```
+
+then the server will receive the player position then broadcast it to another player, so they cant see eacb other position
+```C#
+        public static void PlayerPositionReceived(int _fromClient, Packet _packet)
+        {
+            string code = _packet.ReadString();
+            int id = _packet.ReadInt();
+            int controlHorizontal = _packet.ReadInt();
+            int controlVertical = _packet.ReadInt();
+            
+            //Console.WriteLine($"{code} - {id} - {controlHorizontal} - {controlVertical}");
+            ServerSend.BroadcastPlayerPosition(code, id, controlHorizontal, controlVertical);
+        }
+	
+	public static void BroadcastPlayerPosition(string _codeRoom, int _id, int _controlHorizontal, int _controlVertical)
+        {
+            using (Packet _packet = new Packet((int)ServerPackets.playerPosition))
+            {
+                _packet.Write(_codeRoom);
+                _packet.Write(_id);
+                _packet.Write(_controlHorizontal);
+                _packet.Write(_controlVertical);
+                SendTCPDataToAll(_packet);
+            }
+        }
+```
+below is code to set the question, from all the question will be choose 10 to show for the client, and below code have a function to count player score and show game over if the all of question already finished 
+```C#
+    public void SetDatabase(string codeRoom, int categoryResult, int questionResult)
+    {
+        if (RoomDatabase.instance.roomCode == codeRoom) {
+            if (categoryResult == 0)
+                trivia.Add(TriviaDatabase.instance.triviaHewan[questionResult]);
+            else if (categoryResult == 1)
+                trivia.Add(TriviaDatabase.instance.triviaTumbuhan[questionResult]);
+            else if (categoryResult == 2)
+                trivia.Add(TriviaDatabase.instance.triviaNegara[questionResult]);
+            else if (categoryResult == 3)
+                trivia.Add(TriviaDatabase.instance.triviaDunia[questionResult]);
+        }
+    }
+
+    public void SetQuestion(string codeRoom, int questionResult)
+    {
+        if (RoomDatabase.instance.roomCode == codeRoom) {
+            questionTemp = questionResult;
+            questionText.text = $"{trivia[questionResult].question}";
+            questionFix = trivia[questionResult].question;
+            answerFix = trivia[questionResult].answer;
+            StartCoroutine(QuestionCountDown());
+        }
+    }
+
+    IEnumerator QuestionCountDown()
+    {
+        questionCountDown -= 1;
+        yield return new WaitForSeconds(1);
+
+        if (questionCountDown > 0)
+            StartCoroutine(QuestionCountDown());
+        else
+        {
+            trivia.RemoveAt(questionTemp);
+            questionCountDown = 5f;
+            questionTemp = 0;
+
+            if (answer)
+            {
+                score++;
+                answer = false;
+            }
+
+            if (Client.instance.isHost)
+                ClientSend.TriviaRequest(RoomDatabase.instance.roomCode);
+
+            if (trivia.Count == 0)
+            {
+                Client.instance.myScore += score;
+                Client.instance.myPlay++;
+
+                ClientSend.UpScorePlay(Client.instance.myUname, 
+                                       Client.instance.myScore,
+                                       Client.instance.myPlay);
+
+                Debug.Log($"Total Score: {Client.instance.myScore}");
+                Debug.Log($"Total Play: {Client.instance.myPlay}");
+
+                gameOverPanel.SetActive(true);
+                scoreFinalText.text = $"Your Score's: {score}";
+                isPlay = false;
+            }
+        }
+    }
+```
+every answer will be cheked by code below
+```C#
+public class TriviaCheckAnswer : MonoBehaviour
+{
+    public string thisAnswer;
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.gameObject.name == Client.instance.myUname)
+        {
+            if (thisAnswer == UITriviaManager.instance.answerFix)
+            {
+                UITriviaManager.instance.answer = true;
+                Debug.Log("Jawabanmu Benar");
+            }
+            else
+            {
+                UITriviaManager.instance.answer = false;
+                Debug.Log("Jawabanmu Salah");
+            }
+        }
+    }
+
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        if (collision.gameObject.name == Client.instance.myUname)
+        {
+            UITriviaManager.instance.answer = false;
+            Debug.Log("Kembali Ke Jawabanmu!");
+        }
+    }
+}
+```
+the server will be choose 10 question randomly
+```C#
+    class TriviaHandler
+    {
+        public static void SetQuestion(string codeRoom, bool ready, int maxQuestion)
+        {
+            int questionResult = 0;
+
+            if (ready)
+            {
+                Random rand = new Random();
+                questionResult = rand.Next(0, maxQuestion);
+                ServerSend.TriviaQuestionBroadcast(codeRoom, questionResult);
+            }
+        }
+
+        public static void SetDatabase(string codeRoom, int maxCategory, int maxQuestion)
+        {
+            List<int> numberTemp = new List<int>();
+
+            for (int i = 0; i < maxQuestion; i++)
+            {
+                int categoryResult = 0;
+                int questionResult = 0;
+
+                Random rand = new Random(DateTime.Now.Millisecond);
+
+                do
+                {
+                    categoryResult = rand.Next(0, maxCategory);
+                    questionResult = rand.Next(0, maxQuestion);
+                } while (numberTemp.Contains(questionResult));
+                numberTemp.Add(questionResult);                                
+
+                //Console.WriteLine($"Category: {categoryResult} - Question: {questionResult}");
+                ServerSend.TriviaDatabaseBroadcast(codeRoom, categoryResult, questionResult);
+            }
+        }
+    }
+```
