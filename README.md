@@ -268,7 +268,8 @@ public static void SaveDatabase<T>(T _serialazable, string _fileName)
 </ArrayOfAccountDatabase>
 ```
 
-#### SIgn Up
+### Login Page
+#### Sign Up
 next to sign in form there is sign up form, when user doesnt have an account to sign in so they can make a new account to sign in, below is code from the sign up function on the clients
 ```C#
 public static void SignUpRequest(string uname, string pass)
@@ -343,4 +344,568 @@ then after that the server will send packet to the client to notify that the new
                 SendTCPData(_toClient, _packet);
             }
         }
+```
+
+### Main Menu
+#### Host
+main menu have a lot of feature, let me tell you one by one, first is button to play called online, when online button clicked another button will shown, this code is use to shown the button to make a room or join a room
+```C#
+    public void ChooseOnline(int code)
+    {
+        if (!touched && code == 1)
+        {
+            onlineChoice.SetActive(true);
+            touched = true;
+        }
+        else if (touched)
+        {
+            onlineChoice.SetActive(false);
+            touched = false;
+        }
+    }
+```
+
+below is code that run when user click host button, it will create a room to play, and this code will call a function HostRoomRequest
+```C#
+    public void ChooseHost()
+    {
+        if (codeRoom.text != "")
+        {
+            ClientSend.HostRoomRequest(codeRoom.text);
+            RoomDatabase.instance.roomCode = codeRoom.text;
+        }
+        else
+        {
+            notifText.text = "please input the room code!";
+        }
+    }
+```
+
+on the HostRoomRequest will be send a packet that contain room code to the server
+```C#
+    public static void HostRoomRequest(string code)
+    {
+        using (Packet _packet = new Packet((int)ClientPackets.hostRoomRequest))
+        {
+            _packet.Write(code);
+            SendTCPData(_packet);
+        }
+    }
+```
+
+since server receive a hostroomrequest packet data so server must run HostRoomReceived function, then this function will call a validation class
+```C#
+        public static void HostRoomReceived(int _fromClient, Packet _packet)
+        {
+            string code = _packet.ReadString();
+            string notif = RoomHandler.HostRoomValidation(code);
+            ServerSend.HostRoomValidation(_fromClient, notif);
+        }
+```
+
+then HostRoomValidation will do a validation of a room code that clients send, than on this class will send the code to HostRoom function
+```C#
+        public static string HostRoomValidation(string code)
+        {
+            foreach (RoomDatabase oroom in roomDatabase)
+            {
+                if (code == oroom.code)
+                {
+                    return "create failed! change your room code or join with that code";
+                }
+            }
+
+            HostRoom(code);
+            return "room created succesfully";
+        }
+```
+on the HostRoom, the code wiil be added to the a list of room that a list of room have a variable code that is room code, and isPlay that will be a condition of the room
+```C#
+        public static void HostRoom(string code)
+        {
+            roomDatabase.Add(new RoomDatabase(code));
+            Console.WriteLine($"Room Created Succesfully w/ Code: {code}");
+        }
+```
+```C#
+    class RoomDatabase
+    {
+        public string code { get; set; }
+        public bool isPlay { get; set; }
+
+        public List<PlayerJoinedDatabase> playerJoinedDatabase = new List<PlayerJoinedDatabase>();
+
+        public RoomDatabase(string _code)
+        {
+            code = _code;
+        }
+    }
+```
+then server will send again the room code to the clients, below is the code
+```C#
+        public static void HostRoomValidation(int _toClient, string _msg)
+        {
+            using (Packet _packet = new Packet((int)ServerPackets.hostRoom))
+            {
+                _packet.Write(_msg);
+                SendTCPData(_toClient, _packet);
+            }
+        }
+```
+
+#### Join
+then when there is already room in there, player can join to the room that available, player can click join, then this class will call JoinRoomRequest to send a packet data that contain username, id and code to the server
+```C#
+    public void ChooseJoin()
+    {
+        if (codeRoom.text != "")
+        {
+            ClientSend.JoinRoomRequest(codeRoom.text, Client.instance.myId, Client.instance.myUname);
+            RoomDatabase.instance.roomCode = codeRoom.text;
+        }
+        else
+        {
+            notifText.text = "please input the room code!";
+        }
+    }
+```
+```C#
+    public static void JoinRoomRequest(string code, int id, string uname)
+    {
+        using (Packet _packet = new Packet((int)ClientPackets.joinRoomRequest))
+        {
+            _packet.Write(code);
+            _packet.Write(id);
+            _packet.Write(uname);
+            SendTCPData(_packet);
+        }
+    }
+```
+
+then the server will run a function JoinRoomReceived, in this function will be call another function called JoinRoomValidation to do a validation, is there any room with that code or not, if there a room with that code the client can join into a room, but if there is no room with that code player cant join into a room, because there is no room with that code 
+```C#
+        public static void JoinRoomReceived(int _fromClient, Packet _packet)
+        {
+            string code = _packet.ReadString();
+            int id = _packet.ReadInt();
+            string uname = _packet.ReadString();
+            string notif = RoomHandler.JoinRoomValidation(code, id, uname);
+            ServerSend.JoinRoomValidation(_fromClient, notif);
+        }
+```
+```C#
+        public static string JoinRoomValidation(string code, int id, string uname)
+        {
+            foreach (RoomDatabase oroom in roomDatabase)
+            {
+                if (code == oroom.code)
+                {
+                    JoinRoom(code, id, uname);
+                    return "joined succesfully";
+                }
+            }
+
+            return "join failed! change your room code or host a new room";
+        }
+```
+since the client send a code, id and username server will call a function called JoinRoom, in this function the clients will be checked, if the player has join the room player will be broadcasted to all the clients
+```C#
+        public static void JoinRoom(string _code, int id,string _uname)
+        {
+            for (int i = 0; i < roomDatabase.Count; i++)
+            {
+                if (_code == roomDatabase[i].code)
+                {
+                    bool playerJoined = false;
+                    foreach (PlayerJoinedDatabase oplayer in roomDatabase[roomDatabase.Count - 1].playerJoinedDatabase)
+                    {
+                        if (_uname == oplayer.username)
+                            playerJoined = true;
+                    }
+
+                    if (!playerJoined)
+                    {
+                        roomDatabase[i].playerJoinedDatabase.Add(new PlayerJoinedDatabase(id, _uname, 0));
+
+                        for (int j = 0; j < roomDatabase[i].playerJoinedDatabase.Count; j++)
+                        {
+                            ServerSend.BroadcastPlayerJoined(_code, roomDatabase[i].playerJoinedDatabase[j].id, roomDatabase[i].playerJoinedDatabase[j].username);
+                        }
+                    }
+                }
+            }
+        }
+
+```
+```C#
+        public static void BroadcastPlayerJoined(string _codeRoom, int _id, string _uname)
+        {
+            using (Packet _packet = new Packet((int)ServerPackets.playerJoined))
+            {
+                _packet.Write(_codeRoom);
+                _packet.Write(_id);
+                _packet.Write(_uname);
+                SendTCPDataToAll(_packet);
+            }
+        }
+```
+
+then on the clients side, player who join the room will be added to a list, after that  player who has been join the room will be shown on every clients 
+```C#
+    public static void AddPlayerToDatabase(Packet _packet)
+    {
+        string _codeRoom = _packet.ReadString();
+        int _id = _packet.ReadInt();
+        string _uname = _packet.ReadString();
+
+        if (_codeRoom == RoomDatabase.instance.roomCode)
+        {
+            RoomDatabase.instance.AddPlayerToDatabase(_id, _uname);
+        }
+    }
+``` 
+```C#
+    public void AddPlayerToDatabase(int id, string uname)
+    {
+        bool found = false;
+        for (int i = 0; i < playerDatabase.Count; i++)
+        {
+            if (id == playerDatabase[i].id)
+                found = true;
+        }
+
+        if (!found)
+            playerDatabase.Add(new PlayerDatabase(id, uname, 0));
+    }
+```
+beside play button there is a leave button that will take you out of room and go back to the main menu, in this function client will send packets data that tells the server that user has been leave from the room
+```C#
+    public void LeaveDestroyRoom()
+    {
+        if (!Client.instance.isHost)
+        {
+            ClientSend.LeaveRoomRequest(RoomDatabase.instance.roomCode, Client.instance.myUname);
+            RoomDatabase.instance.RemoveDatabase();
+        }
+        else
+        {
+            ClientSend.DestroyRoomRequest(RoomDatabase.instance.roomCode);
+            GoToScene("MainMenu");
+        }
+
+        Client.instance.isPlay = false;
+    }
+```
+
+and from the play button, client will send a packet to the server to tells the server that the game going to play
+```C#
+    public void StartMatch(string gameType)
+    {
+        ClientSend.StartMatch(RoomDatabase.instance.roomCode, gameType);
+    }
+```
+```C#
+    public static void StartMatch(string code, string gameType)
+    {
+        using (Packet _packet = new Packet((int)ClientPackets.startMatchRequest))
+        {
+            _packet.Write(code);
+            _packet.Write(gameType);
+            SendTCPData(_packet);
+        }
+    }
+```
+when client who is the host of the room send packet data that tell server that game hsa been play, server take that packet and broadcast it to all of the clients 
+```C#
+        public static void StartMatchReceived(int _fromClient, Packet _packet)
+        {
+            string code = _packet.ReadString();
+            string gameType = _packet.ReadString();
+            RoomHandler.StartMatch(code, true, gameType);
+            ServerSend.BroadcastStartMatch(code, gameType);
+        }
+```
+```C#
+        public static void BroadcastStartMatch(string _codeRoom, string _gameType)
+        {
+            using (Packet _packet = new Packet((int)ServerPackets.startMatch))
+            {
+                _packet.Write(_codeRoom);
+                _packet.Write(_gameType);
+                SendTCPDataToAll(_packet);
+            }
+        }
+```
+
+### GamePlay
+after the host play the game, all of clients will be sent to the gameplay scene, first on the gameplay will be generated player as much as clients whose join the room, player script has a function to do a movement script
+```C#
+public class PlayerCharManager : MonoBehaviour
+{
+	public int horizontal = 0;
+	public int vertical = 0;
+	public float maxSpeed = 5f;
+
+	public Animator anim;
+	public Rigidbody2D rb;
+
+	public bool faceRight = true;
+	public bool isDead = false;
+	
+	void Start()
+	{
+		rb = GetComponent<Rigidbody2D>();
+		anim = gameObject.GetComponent<Animator>();
+		anim.SetBool("walk", false);
+		anim.SetBool("dead", false);
+		anim.SetBool("jump", false);
+	}
+
+    void FixedUpdate()
+    {
+		Move(horizontal, vertical);
+	}
+
+	void Move(int horizontal, int vertical)
+    {
+		if (horizontal > 0)
+		{
+			anim.SetBool("walk", true);
+			if (faceRight == false)
+			{
+				Flip();
+			}
+		}
+
+		if ((horizontal < 0))
+		{
+			anim.SetBool("walk", true);
+			if (faceRight == true)
+			{
+				Flip();
+			}
+		}
+
+		if (vertical > 0)
+			anim.SetBool("walk", true);
+
+		if (vertical < 0)
+			anim.SetBool("walk", true);
+
+		if (horizontal == 0 && vertical == 0)
+			anim.SetBool("walk", false);
+
+		rb.velocity = new Vector3(horizontal * maxSpeed, vertical * maxSpeed, 0);
+
+	}
+
+	void Flip()
+	{
+		faceRight = !faceRight;
+		Vector3 theScale = transform.localScale;
+		theScale.x *= -1;
+		transform.localScale = theScale;
+	}
+```
+a Game Manager Script will send player movement to the server
+```C#
+    public void MoveRequest()
+    {
+        int horizontal = Convert.ToInt32(Input.GetAxis("Horizontal"));
+        int vertical = Convert.ToInt32(Input.GetAxis("Vertical"));
+
+        if (horizontal == 0 && vertical == 0 && !sendIdle) {
+            ClientSend.PlayerPosition(RoomDatabase.instance.roomCode,
+                                      Client.instance.myId, horizontal, vertical);
+            
+            sendIdle = true;
+        }
+        
+        if (horizontal != 0 || vertical != 0)
+        {
+            ClientSend.PlayerPosition(RoomDatabase.instance.roomCode,
+                                      Client.instance.myId, horizontal, vertical);
+
+            sendIdle = false;
+        }
+    }
+
+    public void UpdatePlayerPosition(int id, int _controlHorizontal, int _controlVertical)
+    {
+        for (int i = 0; i < RoomDatabase.instance.playerDatabase.Count; i++)
+        {
+            if (RoomDatabase.instance.playerDatabase[i].id == id)
+            {
+                RoomDatabase.instance.playerDatabase[i].character.horizontal = _controlHorizontal;
+                RoomDatabase.instance.playerDatabase[i].character.vertical = _controlVertical;
+            }
+        }
+    }
+```
+
+then the server will receive the player position then broadcast it to another player, so they cant see eacb other position
+```C#
+        public static void PlayerPositionReceived(int _fromClient, Packet _packet)
+        {
+            string code = _packet.ReadString();
+            int id = _packet.ReadInt();
+            int controlHorizontal = _packet.ReadInt();
+            int controlVertical = _packet.ReadInt();
+            
+            //Console.WriteLine($"{code} - {id} - {controlHorizontal} - {controlVertical}");
+            ServerSend.BroadcastPlayerPosition(code, id, controlHorizontal, controlVertical);
+        }
+	
+	public static void BroadcastPlayerPosition(string _codeRoom, int _id, int _controlHorizontal, int _controlVertical)
+        {
+            using (Packet _packet = new Packet((int)ServerPackets.playerPosition))
+            {
+                _packet.Write(_codeRoom);
+                _packet.Write(_id);
+                _packet.Write(_controlHorizontal);
+                _packet.Write(_controlVertical);
+                SendTCPDataToAll(_packet);
+            }
+        }
+```
+below is code to set the question, from all the question will be choose 10 to show for the client, and below code have a function to count player score and show game over if the all of question already finished 
+```C#
+    public void SetDatabase(string codeRoom, int categoryResult, int questionResult)
+    {
+        if (RoomDatabase.instance.roomCode == codeRoom) {
+            if (categoryResult == 0)
+                trivia.Add(TriviaDatabase.instance.triviaHewan[questionResult]);
+            else if (categoryResult == 1)
+                trivia.Add(TriviaDatabase.instance.triviaTumbuhan[questionResult]);
+            else if (categoryResult == 2)
+                trivia.Add(TriviaDatabase.instance.triviaNegara[questionResult]);
+            else if (categoryResult == 3)
+                trivia.Add(TriviaDatabase.instance.triviaDunia[questionResult]);
+        }
+    }
+
+    public void SetQuestion(string codeRoom, int questionResult)
+    {
+        if (RoomDatabase.instance.roomCode == codeRoom) {
+            questionTemp = questionResult;
+            questionText.text = $"{trivia[questionResult].question}";
+            questionFix = trivia[questionResult].question;
+            answerFix = trivia[questionResult].answer;
+            StartCoroutine(QuestionCountDown());
+        }
+    }
+
+    IEnumerator QuestionCountDown()
+    {
+        questionCountDown -= 1;
+        yield return new WaitForSeconds(1);
+
+        if (questionCountDown > 0)
+            StartCoroutine(QuestionCountDown());
+        else
+        {
+            trivia.RemoveAt(questionTemp);
+            questionCountDown = 5f;
+            questionTemp = 0;
+
+            if (answer)
+            {
+                score++;
+                answer = false;
+            }
+
+            if (Client.instance.isHost)
+                ClientSend.TriviaRequest(RoomDatabase.instance.roomCode);
+
+            if (trivia.Count == 0)
+            {
+                Client.instance.myScore += score;
+                Client.instance.myPlay++;
+
+                ClientSend.UpScorePlay(Client.instance.myUname, 
+                                       Client.instance.myScore,
+                                       Client.instance.myPlay);
+
+                Debug.Log($"Total Score: {Client.instance.myScore}");
+                Debug.Log($"Total Play: {Client.instance.myPlay}");
+
+                gameOverPanel.SetActive(true);
+                scoreFinalText.text = $"Your Score's: {score}";
+                isPlay = false;
+            }
+        }
+    }
+```
+every answer will be cheked by code below
+```C#
+public class TriviaCheckAnswer : MonoBehaviour
+{
+    public string thisAnswer;
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.gameObject.name == Client.instance.myUname)
+        {
+            if (thisAnswer == UITriviaManager.instance.answerFix)
+            {
+                UITriviaManager.instance.answer = true;
+                Debug.Log("Jawabanmu Benar");
+            }
+            else
+            {
+                UITriviaManager.instance.answer = false;
+                Debug.Log("Jawabanmu Salah");
+            }
+        }
+    }
+
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        if (collision.gameObject.name == Client.instance.myUname)
+        {
+            UITriviaManager.instance.answer = false;
+            Debug.Log("Kembali Ke Jawabanmu!");
+        }
+    }
+}
+```
+the server will be choose 10 question randomly
+```C#
+    class TriviaHandler
+    {
+        public static void SetQuestion(string codeRoom, bool ready, int maxQuestion)
+        {
+            int questionResult = 0;
+
+            if (ready)
+            {
+                Random rand = new Random();
+                questionResult = rand.Next(0, maxQuestion);
+                ServerSend.TriviaQuestionBroadcast(codeRoom, questionResult);
+            }
+        }
+
+        public static void SetDatabase(string codeRoom, int maxCategory, int maxQuestion)
+        {
+            List<int> numberTemp = new List<int>();
+
+            for (int i = 0; i < maxQuestion; i++)
+            {
+                int categoryResult = 0;
+                int questionResult = 0;
+
+                Random rand = new Random(DateTime.Now.Millisecond);
+
+                do
+                {
+                    categoryResult = rand.Next(0, maxCategory);
+                    questionResult = rand.Next(0, maxQuestion);
+                } while (numberTemp.Contains(questionResult));
+                numberTemp.Add(questionResult);                                
+
+                //Console.WriteLine($"Category: {categoryResult} - Question: {questionResult}");
+                ServerSend.TriviaDatabaseBroadcast(codeRoom, categoryResult, questionResult);
+            }
+        }
+    }
 ```
